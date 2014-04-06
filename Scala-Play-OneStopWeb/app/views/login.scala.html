@@ -1,46 +1,51 @@
 @(form: Form[(String,String)])(implicit flash: Flash)
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
+        <meta charset="utf-8">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
         <title>OneStopWeb</title>
         <link rel="shortcut icon" type="image/x-icon" href="@routes.Assets.at("images/favicon.ico")">
-        <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/login.css")">
+        <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.min.css")">
+        <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/signin.css")">
     </head>
     <body>
         
+        <!-- 
         <header>
             <a href="@routes.OneStop.index" id="logo"><span>OneStop</span>Web</a>
         </header>
-        
-        @helper.form(routes.Application.authenticate) {
+        -->
+        <div class="container">
+            @helper.form(routes.Application.authenticate, 'class -> "form-signin", 'role -> "form") {
+	            
+			        <h2 class="form-signin-heading">Please sign in</h2>
+			        <input type="email" name="email" class="form-control" placeholder="Email address" value="@form("email").value" required autofocus>
+			        <input type="password" name="password" class="form-control" placeholder="Password" required>
+			        <!-- <label class="checkbox">
+          				<input type="checkbox" value="remember-me"> Remember me
+        			</label> -->
+			        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+			        
+			        <br><br>
+			        
+			    @form.globalError.map { error =>
+                	<p class="text-danger">
+                	    @error.message
+                	</p>
+            	}
             
-            <h1>Sign in</h1>
-            
-            @form.globalError.map { error =>
-                <p class="error">
-                    @error.message
-                </p>
-            }
-            
-            @flash.get("success").map { message =>
-                <p class="success">
-                    @message
-                </p>
-            }
-            
-            <p>
-                <input type="email" name="email" placeholder="Email" id="email" value="@form("email").value">
-            </p>
-            <p>
-                <input type="password" name="password" id="password" placeholder="Password">
-            </p>
-            <p>
-                <button type="submit" id="loginbutton">Login</button>
-            </p>
-            
-        }
-  
-            
+            	@flash.get("success").map { message =>
+                	<p class="text-success">
+                	    @message
+                	</p>
+            	}
+	     	}
+	     	  
+
+	    </div>
     </body>
 </html>
     
