@@ -26,7 +26,7 @@ object OneStop extends Controller with Secured {
   private def authenticatedPage( f: User => Appendable): EssentialAction = IsAuthenticated { username => _ =>
     User.findByEmail(username).map { user =>
       Ok(f(user))
-    }.getOrElse(Forbidden("blah"))
+    }.getOrElse(Forbidden)
   }
   
 }
