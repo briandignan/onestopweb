@@ -15,9 +15,9 @@ object OneStop extends Controller with Secured {
 
 	
   def index = authenticatedPage( html.index(_) )
-  def inventory = authenticatedPage( html.inventory(_) )
-  def customers = authenticatedPage( html.customers(_) )
-  def vendors = authenticatedPage( html.vendors(_) )
+  def inventory = authenticatedPage( html.inventoryList(_) )
+  def customers = authenticatedPage( html.customerList(_) )
+  def vendors = authenticatedPage( html.vendorList(_) )
   def reports = authenticatedPage( html.reports(_) )
   def settingsUsers = authenticatedPage( html.settingsUsers(_) )
   def settingsOther = authenticatedPage( html.settingsOther(_) )
