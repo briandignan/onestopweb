@@ -1,14 +1,77 @@
-@(user: User)(body: Html)
+@(user: User, page: String)(body: Html)
 
-<html>
-    <head>
-        <title>OneStopWeb</title>
+<!DOCTYPE html>
+<html lang="en">
+  <head>    
+  		<meta charset="utf-8">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" type="image/x-icon" href="@routes.Assets.at("images/favicon.ico")">
-        <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
+        <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/navbar-fixed-top.css")">
         <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.7.1.js")"></script>
         <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-play-1.7.1.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap.js")"></script>
+        <title>OneStopWeb</title>
     </head>
     <body>
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+      	<!-- 
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand @("active".when(page == "OneStopWeb"))" href="@routes.OneStop.index()">OneStopWeb</a>
+        </div>
+         -->
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="@("active".when(page == "OneStopWeb"))"><a href="@routes.OneStop.index()">OneStopWeb</a></li>
+            <li class="@("active".when(page == "Inventory"))"><a href="@routes.OneStop.inventory()">Inventory</a></li>
+            <li class="@("active".when(page == "Customers"))"><a href="@routes.OneStop.customers()">Customers</a></li>
+            <li class="@("active".when(page == "Vendors"))"><a href="@routes.OneStop.vendors()">Vendors</a></li>
+            <li class="@("active".when(page == "Reports"))"><a href="@routes.OneStop.reports()">Reports</a></li>
+            <li class="@("active".when(page == "Settings"))"><a href="@routes.OneStop.settings()">Settings</a></li>
+            <!-- 
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li> -->
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+          	<!-- 
+            <li><a href="../navbar/">Default</a></li>
+            <li><a href="../navbar-static-top/">Static top</a></li>
+            <li class="active"><a href="./">Fixed top</a></li> -->
+            <!-- <li><a href="@routes.Application.logout()">Logout</a></li> -->
+
+            <li><span class="navbar-text">@user.name - @user.email</span></li>
+            <li><div><a href="@routes.Application.logout()" class="btn btn-primary btn-large"><i class="icon-white icon-heart">Logout</i></a></div></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    
+    <div class="container">
+    	<div class="jumbotron">
+    		@body
+    	</div>
+    </div>
+    
+   		<!-- 
         <header>
             <a href="@routes.OneStop.index" id="logo"><span>OneStop</span>Web</a>
             <dl id="user">
@@ -20,7 +83,9 @@
         </header>
         <section id="main">
             @body
-        </section>
+        </section> 
+        -->
+        
     </body>
 </html>
 
