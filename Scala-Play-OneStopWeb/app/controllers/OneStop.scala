@@ -61,9 +61,18 @@ object OneStop extends Controller with Secured {
   /**
    * Display the home page.
    */
-  def settings = IsAuthenticated { username => _ =>
+  def settingsUsers = IsAuthenticated { username => _ =>
     User.findByEmail(username).map { user =>
-      Ok(html.settings(user))
+      Ok(html.settingsUsers(user))
+    }.getOrElse(Forbidden("blah"))
+  }
+  
+  /**
+   * Display the home page.
+   */
+  def settingsOther = IsAuthenticated { username => _ =>
+    User.findByEmail(username).map { user =>
+      Ok(html.settingsOther(user))
     }.getOrElse(Forbidden("blah"))
   }
 

@@ -36,20 +36,13 @@
             <li class="@("active".when(page == "Customers"))"><a href="@routes.OneStop.customers()">Customers</a></li>
             <li class="@("active".when(page == "Vendors"))"><a href="@routes.OneStop.vendors()">Vendors</a></li>
             <li class="@("active".when(page == "Reports"))"><a href="@routes.OneStop.reports()">Reports</a></li>
-            <li class="@("active".when(page == "Settings"))"><a href="@routes.OneStop.settings()">Settings</a></li>
-            <!-- 
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+            <li class="dropdown @("active".when(page == "Settings"))">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Settings <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
-                <li><a href="#">Separated link</a></li>
-                <li><a href="#">One more separated link</a></li>
+                <li><a href="@routes.OneStop.settingsUsers()">Admin Users</a></li>
+                <li><a href="@routes.OneStop.settingsOther()">Other Settings</a></li>
               </ul>
-            </li> -->
+            </li> 
           </ul>
           <ul class="nav navbar-nav navbar-right">
           	<!-- 
