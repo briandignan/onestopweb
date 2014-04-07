@@ -45,12 +45,6 @@
             </li> 
           </ul>
           <ul class="nav navbar-nav navbar-right">
-          	<!-- 
-            <li><a href="../navbar/">Default</a></li>
-            <li><a href="../navbar-static-top/">Static top</a></li>
-            <li class="active"><a href="./">Fixed top</a></li> -->
-            <!-- <li><a href="@routes.Application.logout()">Logout</a></li> -->
-
             <li><span class="navbar-text">@user.name - @user.email</span></li>
             <li><div><a href="@routes.Application.logout()" class="btn btn-primary btn-large"><i class="icon-white icon-heart">Logout</i></a></div></li>
           </ul>
@@ -63,21 +57,6 @@
     		@body
     	</div>
     </div>
-    
-   		<!-- 
-        <header>
-            <a href="@routes.OneStop.index" id="logo"><span>OneStop</span>Web</a>
-            <dl id="user">
-                <dt>@user.name <span>(@user.email)</span></dt>
-                <dd>
-                    <a href="@routes.Application.logout()">Logout</a>
-                </dd>
-            </dl>
-        </header>
-        <section id="main">
-            @body
-        </section> 
-        -->
         
     </body>
 </html>
