@@ -2,3 +2,8 @@ body {
   min-height: 2000px;
   padding-top: 70px;
 }
+.nav > li > div > a {
+  position: relative;
+  display: block;
+  padding: 15px 15px;
+}
