@@ -24,7 +24,8 @@ object InitialData {
         User("dosetareh@gmail.com", "Ariel Dosetareh", "password"),
         User("brianwei@terpmail.umd.edu", "Brian Weinblatt", "password"),
         User("ramaswamy.adithya@gmail.com", "Adithya Ramaswamy", "password"),
-        User("eamare09@gmail.com", "Ebenezer Amare", "password")
+        User("eamare09@gmail.com", "Ebenezer Amare", "password"),
+        User("jdephillipii@gmail.com", "Jim Dephillip", "password")
       ).foreach(User.create)
       
     }
