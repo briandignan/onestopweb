@@ -12,7 +12,7 @@ import scala.language.postfixOps
 
 import org.mindrot.jbcrypt.BCrypt
 
-case class User(email: String, name: String, password: String)
+case class User(id: Pk[Long] = NotAssigned, email: String, name: String, password: String)
 
 object User {
   
@@ -22,10 +22,11 @@ object User {
    * Parse a User from a ResultSet
    */
   val simple = {
+  	get[Pk[Long]]("user.id") ~
     get[String]("user.email") ~
     get[String]("user.name") ~
     get[String]("user.password") map {
-      case email~name~password => User(email, name, password)
+      case id~email~name~password => User(id,email, name, password)
     }
   }
   
@@ -53,6 +54,50 @@ object User {
       SQL("select * from user").as(User.simple *)
     }
   }
+  
+   /**
+   * Return a page of Users.
+   *
+   * @param page Page to display
+   * @param pageSize Number of computers per page
+   * @param orderBy User property used for sorting
+   * @param filter Filter applied on the name column
+   */
+  def list(page: Int = 0, pageSize: Int = 10, orderBy: Int = 1, filter: String = "%"): Page[User] = {
+    
+    val offest = pageSize * page
+    
+    DB.withConnection { implicit connection =>
+      
+      val users = SQL(
+        """
+          select * from user 
+          where user.name like {filter} 
+          order by {orderBy} nulls last 
+          limit {pageSize} offset {offset}
+        """
+      ).on(
+        'pageSize -> pageSize, 
+        'offset -> offest,
+        'filter -> filter,
+        'orderBy -> orderBy
+      ).as(User.simple *)
+
+      val totalRows = SQL(
+        """
+          select count(*) from user 
+          where user.name like {filter}
+        """
+      ).on(
+        'filter -> filter
+      ).as(scalar[Long].single)
+
+      Page(users, page, offest, totalRows)
+      
+    }
+    
+  }
+  
   
   /**
    * Authenticate a User.
@@ -93,9 +138,9 @@ object User {
     DB.withConnection { implicit connection =>
       SQL(
         """
-          insert into user values (
-            {email}, {name}, {password}
-          )
+          insert into user 
+      		(email, name, password) 
+      		values ({email}, {name}, {password})
         """
       ).on(
         'email -> user.email,

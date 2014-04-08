@@ -20,12 +20,12 @@ object InitialData {
     if(User.findAll.isEmpty) {
       
       Seq(
-        User("briandignan@gmail.com", "Brian Dignan", "password"),
-        User("dosetareh@gmail.com", "Ariel Dosetareh", "password"),
-        User("brianwei@terpmail.umd.edu", "Brian Weinblatt", "password"),
-        User("ramaswamy.adithya@gmail.com", "Adithya Ramaswamy", "password"),
-        User("eamare09@gmail.com", "Ebenezer Amare", "password"),
-        User("jdephillipii@gmail.com", "Jim Dephillip", "password")
+        User(NotAssigned, "briandignan@gmail.com", "Brian Dignan", "password"),
+        User(NotAssigned, "dosetareh@gmail.com", "Ariel Dosetareh", "password"),
+        User(NotAssigned, "brianwei@terpmail.umd.edu", "Brian Weinblatt", "password"),
+        User(NotAssigned, "ramaswamy.adithya@gmail.com", "Adithya Ramaswamy", "password"),
+        User(NotAssigned, "eamare09@gmail.com", "Ebenezer Amare", "password"),
+        User(NotAssigned, "jdephillipii@gmail.com", "Jim Dephillip", "password")
       ).foreach(User.create)
       
     }

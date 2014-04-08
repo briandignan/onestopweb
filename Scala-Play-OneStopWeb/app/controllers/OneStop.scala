@@ -19,7 +19,6 @@ object OneStop extends Controller with Secured {
   def customerList = authenticatedPage( html.customerList(_) )
   def vendorList = authenticatedPage( html.vendorList(_) )
   def reports = authenticatedPage( html.reports(_) )
-  def settingsUserList = authenticatedPage( html.settingsUserList(_) )
   def settingsOther = authenticatedPage( html.settingsOther(_) )
 
   
@@ -28,5 +27,7 @@ object OneStop extends Controller with Secured {
       Ok(f(user))
     }.getOrElse(Forbidden)
   }
+  
+
   
 }

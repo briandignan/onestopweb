@@ -7,8 +7,11 @@ GET		/inventory/list				controllers.OneStop.inventoryList
 GET		/customers/list				controllers.OneStop.customerList
 GET		/vendors/list				controllers.OneStop.vendorList
 GET		/reports					controllers.OneStop.reports
-GET		/adminusers/list			controllers.OneStop.settingsUserList
 GET		/othersettings				controllers.OneStop.settingsOther
+
+GET		/adminusers/list			controllers.AdminUsers.list(p:Int ?= 0, s:Int ?= 2, f ?= "")
+GET		/adminusers/create			controllers.AdminUsers.create
+GET		/adminusers/edit/:id		controllers.AdminUsers.edit(id: Long)
 
 GET		/login						controllers.Application.login
 POST	/login						controllers.Application.authenticate
