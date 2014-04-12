@@ -9,6 +9,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="@routes.Assets.at("images/favicon.ico")">
         <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
         <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/navbar-fixed-top.css")">
+        <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/table.css")">
         <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.7.1.js")"></script>
         <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-play-1.7.1.js")"></script>
         <script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap.js")"></script>
@@ -46,17 +47,24 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><span class="navbar-text">@user.name - @user.email</span></li>
-            <li><div><a href="@routes.Application.logout()" class="btn btn-primary btn-large"><i class="icon-white icon-heart">Logout</i></a></div></li>
+            <li><div><a href="@routes.Application.logout()" class="btn btn-primary"><i class="icon-white icon-heart">Logout</i></a></div></li>
+           </li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </div>
-    
+
+	<section id="main">
+		@body
+	</section>
+	<!-- 
     <div class="container">
     	<div class="jumbotron">
-    		@body
+    		
     	</div>
     </div>
+      -->
+
         
     </body>
 </html>

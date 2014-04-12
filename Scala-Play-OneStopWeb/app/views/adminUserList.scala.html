@@ -34,21 +34,20 @@
     <div id="actions">
         
         @helper.form(action=routes.AdminUsers.list()) {
-            <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Filter by user name...">
-            <input type="submit" id="searchsubmit" value="Filter by name" class="btn primary">
+            <input type="search" id=" " name="f" value="@currentFilter" placeholder="Filter by user name...">
+            <input type="submit" id="searchsubmit" value="Filter by name" class="btn btn-primary">
         }
         
-        <a class="btn success" id="add" href="@routes.AdminUsers.create()">Add a new admin user</a>
+        <a class="btn btn-success" id="add" href="@routes.AdminUsers.create()">Add a new admin user</a>
         
     </div>
     
     @Option(currentPage.items).filterNot(_.isEmpty).map { users =>
-        
-        <table class="computers zebra-striped">
+        <table class="users table table-bordered table-striped">
             <thead>
                 <tr>
-                    @header(2, "Name")
-                    @header(3, "Email Address")
+                    @header(2, "Email Address")
+                    @header(3, "Name")
                 </tr>
             </thead>
             <tbody>
@@ -56,12 +55,9 @@
                 @users.map { 
                     case user => {
                         <tr>
-                            <td><a href="@routes.AdminUsers.edit(user.id.get)">@user.name</a></td>
+                            <td><a href="@routes.AdminUsers.edit(user.id.get)">@user.email</a></td>
                             <td>
                                 @user.name
-                            </td>
-                            <td>
-                                @user.email
                             </td>
                         </tr>
                     }
@@ -69,15 +65,15 @@
 
             </tbody>
         </table>
-
-        <div id="pagination" class="pagination">
+	
+        <div class="pager">
             <ul>
                 @currentPage.prev.map { page =>
-                    <li class="prev">
+                    <li class="previous">
                         <a href="@link(page)">&larr; Previous</a>
                     </li> 
                 }.getOrElse {
-                    <li class="prev disabled">
+                    <li class="previous disabled">
                         <a>&larr; Previous</a>
                     </li>
                 }
