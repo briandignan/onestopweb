@@ -18,7 +18,7 @@ object AdminUsers extends Controller with Secured {
     User.findByEmail(username).map { user =>
       Ok(html.adminUserList(
       		user, 
-      		User.list(page, 10, orderBy, "%"+filter+"%"),
+      		User.list(page, 5, orderBy, "%"+filter+"%"),
       		orderBy, 
       		filter))
     }.getOrElse(Forbidden)
