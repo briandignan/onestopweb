@@ -11,6 +11,11 @@
 	
 	<div class="centered-form">
 	
+		
+		@userForm.globalError.map { error => 
+			<div class="alert alert-danger"><strong>Error!</strong> @error.message</div>
+		}
+		
 		@helper.form(action=routes.AdminUsers.update(userIdToEdit)) {
 			
 			<fieldset>
