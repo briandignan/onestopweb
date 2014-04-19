@@ -12,7 +12,7 @@ GET		/othersettings				controllers.OneStop.settingsOther
 GET		/adminusers/listold			controllers.AdminUsers.listOld(p:Int ?= 0, s:Int ?= 2, f ?= "")
 GET		/adminusers					controllers.AdminUsers.list
 GET		/adminusers/new				controllers.AdminUsers.create
-POST	/adminusers					controllers.AdminUsers.addUser
+POST	/adminusers					controllers.AdminUsers.add
 GET		/adminusers/:id				controllers.AdminUsers.edit(id: Long)
 POST	/adminusers/:id				controllers.AdminUsers.update(id: Long)
 POST	/adminusers/:id/delete		controllers.AdminUsers.delete(id: Long)
