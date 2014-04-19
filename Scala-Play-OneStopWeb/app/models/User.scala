@@ -12,7 +12,7 @@ import scala.language.postfixOps
 
 import org.mindrot.jbcrypt.BCrypt
 
-case class User( id: Pk[Long] = NotAssigned, email: String, name: String, password: String )
+case class User( id: Pk[Long] = NotAssigned, email: String, firstName: String, lastName: String, password: String )
 
 object User {
 
@@ -22,19 +22,24 @@ object User {
 	 * Parse a User from a ResultSet
 	 */
 	val simple = {
-		get[Pk[Long]]( "user.id" ) ~
-			get[String]( "user.email" ) ~
-			get[String]( "user.name" ) ~
-			get[String]( "user.password" ) map {
-				case id ~ email ~ name ~ password => User( id, email, name, password )
+		get[Pk[Long]]( "AdminUsers.UserID" ) ~
+			get[String]( "AdminUsers.EmailAddress" ) ~
+			get[String]( "AdminUsers.FirstName" ) ~
+			get[String]( "AdminUsers.LastName" ) ~
+			get[String]( "AdminUsers.Password" ) map {
+				case id ~ email ~ firstName ~ lastName ~ password => User( id, email, firstName, lastName, password )
 			}
 	}
 
+	/**
+	 * Parse a User from a ResultSet that doesn't contain a password
+	 */
 	val withoutPassword = {
-		get[Pk[Long]]( "user.id" ) ~
-			get[String]( "user.email" ) ~
-			get[String]( "user.name" ) map {
-				case id ~ email ~ name => User( id, email, name, "" )
+		get[Pk[Long]]( "AdminUsers.UserID" ) ~
+			get[String]( "AdminUsers.EmailAddress" ) ~
+			get[String]( "AdminUsers.FirstName" ) ~
+			get[String]( "AdminUsers.LastName" ) map {
+				case id ~ email ~ firstName ~ lastName => User( id, email, firstName, lastName, "" )
 			}
 	}
 
@@ -45,7 +50,7 @@ object User {
 	 */
 	def findByEmail( email: String ): Option[User] = {
 		DB.withConnection { implicit connection =>
-			SQL( "select * from user where email = {email}" ).on(
+			SQL( "SELECT * FROM AdminUsers WHERE EmailAddress = {email}" ).on(
 				'email -> email ).as( User.simple.singleOpt )
 		}
 	}
@@ -55,7 +60,7 @@ object User {
 	 */
 	def findById( id: Long ): Option[User] = {
 		DB.withConnection { implicit connection =>
-			SQL( "SELECT id, name, email FROM user WHERE id = {id}" ).on(
+			SQL( "SELECT UserID, FirstName, LastName, EmailAddress FROM AdminUsers WHERE UserID = {id}" ).on(
 				'id -> id ).as( User.withoutPassword.singleOpt )
 		}
 	}
@@ -65,7 +70,7 @@ object User {
 	 */
 	def findAll: Seq[User] = {
 		DB.withConnection { implicit connection =>
-			SQL( "SELECT * FROM user" ).as( User.simple * )
+			SQL( "SELECT * FROM AdminUsers" ).as( User.simple * )
 		}
 	}
 
@@ -85,8 +90,8 @@ object User {
 
 			val users = SQL(
 				"""
-					SELECT * FROM user 
-					WHERE user.name LIKE {filter} 
+					SELECT * FROM AdminUsers 
+					WHERE LastName LIKE {filter} 
 					ORDER BY {orderBy} nulls last 
 					LIMIT {pageSize} OFFSET {offset}
 				""" ).on(
@@ -97,8 +102,8 @@ object User {
 
 			val totalRows = SQL(
 				"""
-					SELECT count(*) FROM user 
-					WHERE user.name LIKE {filter}
+					SELECT count(*) FROM AdminUsers 
+					WHERE LastName LIKE {filter}
 				""" ).on(
 					'filter -> filter ).as( scalar[Long].single )
 
@@ -116,8 +121,8 @@ object User {
 			{
 				val results = SQL(
 					"""
-						SELECT * FROM user  
-						WHERE email = {email}
+						SELECT * FROM AdminUsers  
+						WHERE EmailAddress = {email}
 					""" ).on( 'email -> email )
 				val matchingUsers = results.as( User.simple * ).toList
 				if ( matchingUsers.size != 1 ) {
@@ -139,20 +144,18 @@ object User {
 	/**
 	 * Create a User.
 	 */
-	def create( user: User ): User = {
+	def create( user: User ): Int = {
 		DB.withConnection { implicit connection =>
 			SQL(
 				"""
-					INSERT INTO user 
-					(email, name, password) 
-					VALUES ({email}, {name}, {password})
+					INSERT INTO AdminUsers 
+					(EmailAddress, FirstName, LastName, Password) 
+					VALUES ({email}, {firstName}, {lastName}, {password})
 				""" ).on(
 					'email -> user.email,
-					'name -> user.name,
+					'firstName -> user.firstName,
+					'lastName -> user.lastName,
 					'password -> BCrypt.hashpw( user.password, BCrypt.gensalt() ) ).executeUpdate()
-
-			user
-
 		}
 	}
 
@@ -163,7 +166,7 @@ object User {
 	 */
 	def delete( id: Long ) = {
 		DB.withConnection { implicit connection =>
-			SQL( "DELETE FROM user WHERE id = {id}" ).on( 'id -> id ).executeUpdate()
+			SQL( "DELETE FROM AdminUsers WHERE id = {id}" ).on( 'id -> id ).executeUpdate()
 		}
 	}
 
@@ -178,22 +181,24 @@ object User {
 			if ( user.password == "" ) {
 				SQL(
 					"""
-						UPDATE user
-						SET name = {name}, email = {email}
-						WHERE id = {id}
+						UPDATE AdminUsers
+						SET FirstName = {firstName}, LastName = {lastName}, EmailAddress = {email}
+						WHERE UserID = {id}
 					""" ).on(
 						'id -> id,
-						'name -> user.name,
+						'firstName -> user.firstName,
+						'lastName -> user.lastName,
 						'email -> user.email ).executeUpdate()
 			} else {
 				SQL(
 					"""
-						UPDATE user
-						SET name = {name}, email = {email}, password = {password}
-						WHERE id = {id}
+						UPDATE AdminUsers
+						SET FirstName = {firstName}, LastName = {lastName}, EmailAddress = {email}, Password = {password}
+						WHERE UserID = {id}
 					""" ).on(
 						'id -> id,
-						'name -> user.name,
+						'firstName -> user.firstName,
+						'lastName -> user.lastName,
 						'email -> user.email,
 						'password -> BCrypt.hashpw( user.password, BCrypt.gensalt() ) ).executeUpdate()
 			}

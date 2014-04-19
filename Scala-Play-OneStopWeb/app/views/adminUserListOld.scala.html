@@ -47,7 +47,8 @@
             <thead>
                 <tr>
                     @header(2, "Email Address")
-                    @header(3, "Name")
+                    @header(3, "First Name")
+                    @header(4, "Last Name")
                 </tr>
             </thead>
             <tbody>
@@ -57,7 +58,10 @@
                         <tr>
                             <td><a href="@routes.AdminUsers.edit(user.id.get)">@user.email</a></td>
                             <td>
-                                @user.name
+                                @user.firstName
+                            </td>
+                            <td>
+                                @user.lastName
                             </td>
                         </tr>
                     }
