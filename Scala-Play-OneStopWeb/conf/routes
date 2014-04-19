@@ -9,7 +9,6 @@ GET		/vendors					controllers.OneStop.vendorList
 GET		/reports					controllers.OneStop.reports
 GET		/othersettings				controllers.OneStop.settingsOther
 
-GET		/adminusers/listold			controllers.AdminUsers.listOld(p:Int ?= 0, s:Int ?= 2, f ?= "")
 GET		/adminusers					controllers.AdminUsers.list
 GET		/adminusers/new				controllers.AdminUsers.create
 POST	/adminusers					controllers.AdminUsers.addUser
