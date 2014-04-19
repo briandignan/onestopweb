@@ -17,6 +17,9 @@ div#main {
     padding: 5em 2em;
     border-bottom: 1px solid #ccc;
     min-height: 600px;
+    width: 970px;
+    margin-left: auto;
+    margin-right: auto;
 } 
 
 div#main .topRight {
