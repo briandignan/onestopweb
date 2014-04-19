@@ -4,7 +4,7 @@
 @main(user, "Settings") {
     
     @flash.get("success").map { message =>
-        <div class="alert alert-warning">
+        <div class="alert alert-success">
             <strong>Done!</strong> @message
         </div>
     }
