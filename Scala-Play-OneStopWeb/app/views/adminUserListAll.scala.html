@@ -12,7 +12,7 @@
 
     
     @Option(currentPage.items).filterNot(_.isEmpty).map { users =>
-        <table id="main-table">
+        <table id="example">
             <thead>
                 <tr>
                     <th>Email Address</th>
@@ -37,9 +37,7 @@
         
         <script>
 		  $(function(){
-		    $("#main-table").dataTable({
-		    	"bStateSave": true
-			}) 
+		    $("#example").dataTable();
 		  })
 		</script>
         
