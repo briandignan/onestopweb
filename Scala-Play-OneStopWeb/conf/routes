@@ -3,15 +3,19 @@
 # ~~~~
 
 GET     /                           controllers.OneStop.index
-GET		/inventory/list				controllers.OneStop.inventoryList
-GET		/customers/list				controllers.OneStop.customerList
-GET		/vendors/list				controllers.OneStop.vendorList
+GET		/inventory					controllers.OneStop.inventoryList
+GET		/customers					controllers.OneStop.customerList
+GET		/vendors					controllers.OneStop.vendorList
 GET		/reports					controllers.OneStop.reports
 GET		/othersettings				controllers.OneStop.settingsOther
 
-GET		/adminusers/list			controllers.AdminUsers.list(p:Int ?= 0, s:Int ?= 2, f ?= "")
-GET		/adminusers/create			controllers.AdminUsers.create
-GET		/adminusers/edit/:id		controllers.AdminUsers.edit(id: Long)
+GET		/adminusers/listold			controllers.AdminUsers.listOld(p:Int ?= 0, s:Int ?= 2, f ?= "")
+GET		/adminusers					controllers.AdminUsers.list
+GET		/adminusers/new				controllers.AdminUsers.create
+POST	/adminusers					controllers.AdminUsers.addUser
+GET		/adminusers/:id				controllers.AdminUsers.edit(id: Long)
+POST	/adminusers/:id				controllers.AdminUsers.update(id: Long)
+POST	/adminusers/:id/delete		controllers.AdminUsers.delete(id: Long)
 
 GET		/login						controllers.Application.login
 POST	/login						controllers.Application.authenticate

@@ -1,0 +1,37 @@
+@* adminUserEdit Template File *@
+@(loggedInUser: User, userIdToEdit: Long, userForm: Form[User])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.f) }
+
+@main(loggedInUser, "Settings") {
+
+	<!-- <p>Editing @userIdToEdit</p> -->
+	
+	<div class="centered-form">
+	
+		@helper.form(action=routes.AdminUsers.update(userIdToEdit)) {
+			
+			<fieldset>
+			
+				@inputText(userForm("email"), '_label -> "Email Address")
+				@inputText(userForm("name"), '_label -> "Name")
+				@inputPassword(userForm("password"), '_label -> "Password")
+			
+			</fieldset>
+			
+			<div class="actions">
+	            <input type="submit" value="Update" class="btn btn-primary"> or 
+	            <a href="@routes.AdminUsers.list()" class="btn btn-default">Cancel</a> 
+	        </div>
+			
+		}
+		
+		@form(routes.AdminUsers.delete(userIdToEdit), 'class -> "topRight") {
+	        <input type="submit" value="Delete" class="btn btn-danger">
+	    }
+    
+    </div>
+	
+}

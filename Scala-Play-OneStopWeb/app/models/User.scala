@@ -30,6 +30,14 @@ object User {
     }
   }
   
+  val withoutPassword = {
+  	get[Pk[Long]]("user.id") ~
+    get[String]("user.email") ~
+    get[String]("user.name") map {
+      case id~email~name => User(id,email, name, "")
+    }
+  }
+  
   // -- Queries
   
   /**
@@ -43,6 +51,21 @@ object User {
       ).as(User.simple.singleOpt)
     }
   	Logger.info("findByEmail result: " + result)
+  	result
+  }
+  
+  
+   /**
+   * Retrieve a User from email.
+   */
+  def findById(id: Long): Option[User] = {
+  	Logger.info("Attempting to find user with id: " + id)
+    val result = DB.withConnection { implicit connection =>
+      SQL("select id, name, email from user where id = {id}").on(
+        'id -> id
+      ).as(User.withoutPassword.singleOpt)
+    }
+  	Logger.info("findById result: " + result)
   	result
   }
   
@@ -147,10 +170,63 @@ object User {
         'name -> user.name,
         'password -> BCrypt.hashpw(user.password, BCrypt.gensalt())
       ).executeUpdate()
-      
+
       user
       
     }
   }
+  
+  /**
+   * Delete a user.
+   *
+   * @param id Id of the user to delete.
+   */
+  def delete(id: Long) = {
+    DB.withConnection { implicit connection =>
+      SQL("delete from user where id = {id}").on('id -> id).executeUpdate()
+    }
+  }
+  
+  
+  /**
+   * Update a user.
+   *
+   * @param id The user id
+   * @param user The user values.
+   */
+  def update(id: Long, user: User) = {
+    DB.withConnection { implicit connection =>
+      if (user.password == "") {
+      	  Logger.debug( "Updating user with id " + id + " without updating password" )
+	  	 SQL(
+	        """
+	          update user
+	          set name = {name}, email = {email}
+	          where id = {id}
+	        """
+	      ).on(
+	        'id -> id,
+	        'name -> user.name,
+	        'email -> user.email
+	      ).executeUpdate()
+	   } else {
+      	  Logger.debug( "Updating user with id " + id + " with a new password" )
+	      SQL(
+	        """
+	          update user
+	          set name = {name}, email = {email}, password = {password}
+	          where id = {id}
+	        """
+	      ).on(
+	        'id -> id,
+	        'name -> user.name,
+	        'email -> user.email,
+	        'password -> BCrypt.hashpw(user.password, BCrypt.gensalt())
+	      ).executeUpdate()
+	   }
+    }
+  }
+ 
+
   
 }

@@ -7,15 +7,22 @@
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" type="image/x-icon" href="@routes.Assets.at("images/favicon.ico")">
-        <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
+        <!-- <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")"> -->
+        <link rel="stylesheet" type="text/css" media="screen" href="http://getbootstrap.com/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
         <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/navbar-fixed-top.css")">
         <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/table.css")">
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.7.1.js")"></script>
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-play-1.7.1.js")"></script>
+        <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/dataTables.bootstrap.css")">
+        <!-- <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.7.1.js")"></script>  -->
+        <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+        <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/dataTables.bootstrap.js")"></script>
+        <!-- <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-play-1.7.1.js")"></script> -->
         <script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap.js")"></script>
+        
         <title>OneStopWeb</title>
     </head>
-    <body>
+    <body class="main-body">
     <!-- Fixed navbar -->
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
@@ -54,9 +61,9 @@
       </div>
     </div>
 
-	<section id="main">
+	<div id="main">
 		@body
-	</section>
+	</div>
 	<!-- 
     <div class="container">
     	<div class="jumbotron">
