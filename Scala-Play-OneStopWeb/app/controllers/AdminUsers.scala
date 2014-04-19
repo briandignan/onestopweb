@@ -31,12 +31,13 @@ object AdminUsers extends Controller with Secured {
 			"id" -> ignored( NotAssigned: Pk[Long] ),
 			"email" -> email,
 			"name" -> nonEmptyText,
-			"password" -> default( text, "" ) )( User.apply )( User.unapply ).verifying( uniqueEmailIdConstraint ) )
+			"password" -> default( text, "" ) )( User.apply )( User.unapply )
+			.verifying( uniqueEmailIdConstraint ) )
 
 	lazy val uniqueEmailIdConstraint = Constraint[User]( Some( "Unique Email-ID" ), "" )( checkUniqueEmailId )
 
 	// Check to see if a user with a different ID has this email. 
-	def checkUniqueEmailId( user: User ): ValidationResult = {
+	private def checkUniqueEmailId( user: User ): ValidationResult = {
 		User.findByEmail( user.email ) match {
 			case Some( matchingUser ) => {
 				// This email exists in the DB. Check to see if it's from the same user, or from a different user
@@ -62,7 +63,7 @@ object AdminUsers extends Controller with Secured {
 
 	lazy val uniqueEmailConstraint = Constraint[String]( Some( "Unique" ), "" )( checkUniqueEmail )
 
-	def checkUniqueEmail( email: String ): ValidationResult = {
+	private def checkUniqueEmail( email: String ): ValidationResult = {
 		User.findByEmail( email ) match {
 			case Some( user ) => Invalid( "A user with email: " + email + " already exists in the database" )
 			case None => Valid
@@ -80,6 +81,9 @@ object AdminUsers extends Controller with Secured {
 			}.getOrElse( Forbidden )
 	}
 
+	/**
+	 * Displays the list of admin users in the database
+	 */
 	def list() = IsAuthenticated { username =>
 		implicit request =>
 			User.findByEmail( username ).map { user =>
@@ -92,28 +96,26 @@ object AdminUsers extends Controller with Secured {
 	/**
 	 * Display tbe 'create user' form
 	 */
-	def create = IsAuthenticated {
-		username =>
-			implicit request =>
-				User.findByEmail( username ).map { user =>
-					Ok( html.adminUserCreate( user, userCreateForm ) )
-				}.getOrElse( Forbidden )
+	def create = IsAuthenticated { username =>
+		implicit request =>
+			User.findByEmail( username ).map { user =>
+				Ok( html.adminUserCreate( user, userCreateForm ) )
+			}.getOrElse( Forbidden )
 	}
 
 	/**
 	 * Handle the 'create user' form submission
 	 */
-	def add = IsAuthenticated {
-		username =>
-			implicit request =>
-				User.findByEmail( username ).map { user =>
-					userCreateForm.bindFromRequest.fold(
-						formWithErrors => BadRequest( html.adminUserCreate( user, formWithErrors ) ),
-						userToAdd => {
-							User.create( userToAdd )
-							Home.flashing( "success" -> "User %s has been created".format( userToAdd.name ) )
-						} )
-				}.getOrElse( Forbidden )
+	def add = IsAuthenticated { username =>
+		implicit request =>
+			User.findByEmail( username ).map { user =>
+				userCreateForm.bindFromRequest.fold(
+					formWithErrors => BadRequest( html.adminUserCreate( user, formWithErrors ) ),
+					userToAdd => {
+						User.create( userToAdd )
+						Home.flashing( "success" -> "User %s has been created".format( userToAdd.name ) )
+					} )
+			}.getOrElse( Forbidden )
 	}
 
 	/**
@@ -121,22 +123,21 @@ object AdminUsers extends Controller with Secured {
 	 *
 	 * @param id Id of the user to edit
 	 */
-	def edit( id: Long ) = IsAuthenticated {
-		username =>
-			implicit request =>
-				User.findByEmail( username ).map { user =>
-					User.findById( id ) match {
-						case Some( userToEdit ) => {
-							Ok( html.adminUserEdit(
-								user,
-								id,
-								userEditForm.fill( userToEdit ) ) )
-						}
-						case None => {
-							NotFound
-						}
+	def edit( id: Long ) = IsAuthenticated { username =>
+		implicit request =>
+			User.findByEmail( username ).map { user =>
+				User.findById( id ) match {
+					case Some( userToEdit ) => {
+						Ok( html.adminUserEdit(
+							user,
+							id,
+							userEditForm.fill( userToEdit ) ) )
 					}
-				}.getOrElse( Forbidden )
+					case None => {
+						NotFound
+					}
+				}
+			}.getOrElse( Forbidden )
 	}
 
 	/**
@@ -144,38 +145,36 @@ object AdminUsers extends Controller with Secured {
 	 *
 	 * @param id Id of the user to edit
 	 */
-	def update( id: Long ) = IsAuthenticated {
-		username =>
-			implicit request =>
-				User.findByEmail( username ).map { user =>
-					userEditForm.bindFromRequest.fold(
-						formWithErrors => {
-							Logger.debug( formWithErrors.toString )
-							BadRequest( html.adminUserEdit( user, id, formWithErrors ) )
-						},
-						userToUpdate => {
-							User.update( id, userToUpdate )
-							Home.flashing( "success" -> "User %s has been updated".format( userToUpdate.name ) )
-						} )
-				}.getOrElse( Forbidden )
+	def update( id: Long ) = IsAuthenticated { username =>
+		implicit request =>
+			User.findByEmail( username ).map { user =>
+				userEditForm.bindFromRequest.fold(
+					formWithErrors => {
+						Logger.debug( formWithErrors.toString )
+						BadRequest( html.adminUserEdit( user, id, formWithErrors ) )
+					},
+					userToUpdate => {
+						User.update( id, userToUpdate )
+						Home.flashing( "success" -> "User %s has been updated".format( userToUpdate.name ) )
+					} )
+			}.getOrElse( Forbidden )
 	}
 
 	/**
 	 * Handle user deletion.
 	 */
-	def delete( id: Long ) = IsAuthenticated {
-		username =>
-			implicit request =>
-				User.findByEmail( username ).map { user =>
-					val userToDelete = User.findById( id )
-					if ( userToDelete.get.email == user.email ) {
-						Home.flashing( "error" -> "Can't delete your own account!" )
-					} else {
-						User.delete( id )
-						Home.flashing( "success" -> "User has been deleted" )
-					}
+	def delete( id: Long ) = IsAuthenticated { username =>
+		implicit request =>
+			User.findByEmail( username ).map { user =>
+				val userToDelete = User.findById( id )
+				if ( userToDelete.get.email == user.email ) {
+					Home.flashing( "error" -> "Can't delete your own account!" )
+				} else {
+					User.delete( id )
+					Home.flashing( "success" -> "User has been deleted" )
+				}
 
-				}.getOrElse( Forbidden )
+			}.getOrElse( Forbidden )
 	}
 
 }
