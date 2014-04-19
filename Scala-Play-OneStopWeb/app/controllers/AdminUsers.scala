@@ -102,8 +102,14 @@ object AdminUsers extends Controller with Secured {
   def delete(id: Long) = IsAuthenticated {
   	username => implicit request =>
     User.findByEmail(username).map { user =>
-    	User.delete(id)
-    	Home.flashing("success" -> "User has been deleted")
+    	val userToDelete = User.findById(id)
+    	if ( userToDelete.get.email == user.email ) {
+    		Home.flashing("error" -> "Can't delete your own account!")
+    	} else {
+    		User.delete(id)
+    		Home.flashing("success" -> "User has been deleted")
+    	}
+
     }.getOrElse(Forbidden)
   }
   
