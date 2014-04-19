@@ -29,10 +29,13 @@ object AdminUsers extends Controller with Secured {
 	val userEditForm = Form(
 		mapping(
 			"id" -> ignored( NotAssigned: Pk[Long] ),
+			//"id" -> of[Long],
 			"email" -> email,
-			"name" -> nonEmptyText,
+			"firstName" -> nonEmptyText,
+			"lastName" -> nonEmptyText,
 			"password" -> default( text, "" ) )( User.apply )( User.unapply )
-			.verifying( uniqueEmailIdConstraint ) )
+			 )
+			//.verifying( uniqueEmailIdConstraint ))
 
 	lazy val uniqueEmailIdConstraint = Constraint[User]( Some( "Unique Email-ID" ), "" )( checkUniqueEmailId )
 
@@ -41,6 +44,8 @@ object AdminUsers extends Controller with Secured {
 		User.findByEmail( user.email ) match {
 			case Some( matchingUser ) => {
 				// This email exists in the DB. Check to see if it's from the same user, or from a different user
+				println( "Matching ID: " + matchingUser.id )
+				println( "This ID: " + user.id )
 				if ( matchingUser.id == user.id ) {
 					Valid
 				} else {
@@ -58,7 +63,8 @@ object AdminUsers extends Controller with Secured {
 		mapping(
 			"id" -> ignored( NotAssigned: Pk[Long] ),
 			"email" -> email.verifying( uniqueEmailConstraint ),
-			"name" -> nonEmptyText,
+			"firstName" -> nonEmptyText,
+			"lastName" -> nonEmptyText,
 			"password" -> nonEmptyText )( User.apply )( User.unapply ) )
 
 	lazy val uniqueEmailConstraint = Constraint[String]( Some( "Unique" ), "" )( checkUniqueEmail )
@@ -113,7 +119,7 @@ object AdminUsers extends Controller with Secured {
 					formWithErrors => BadRequest( html.adminUserCreate( user, formWithErrors ) ),
 					userToAdd => {
 						User.create( userToAdd )
-						Home.flashing( "success" -> "User %s has been created".format( userToAdd.name ) )
+						Home.flashing( "success" -> "User %s %s has been created".format( userToAdd.firstName, userToAdd.lastName ) )
 					} )
 			}.getOrElse( Forbidden )
 	}
@@ -154,8 +160,17 @@ object AdminUsers extends Controller with Secured {
 						BadRequest( html.adminUserEdit( user, id, formWithErrors ) )
 					},
 					userToUpdate => {
-						User.update( id, userToUpdate )
-						Home.flashing( "success" -> "User %s has been updated".format( userToUpdate.name ) )
+						val opt = User.findByEmail( userToUpdate.email )
+						opt match {
+							case Some( matchingUser ) if matchingUser.id.get != id => {
+								// Attempt to update a user's email address to an email that's already assigned to another user
+								Home.flashing( "error" -> "Another user already is already assigned %s".format( userToUpdate.email ) )
+							}
+							case _ => {
+								User.update( id, userToUpdate )
+								Home.flashing( "success" -> "User %s %s has been updated".format( userToUpdate.firstName, userToUpdate.lastName ) )
+							}
+						}
 					} )
 			}.getOrElse( Forbidden )
 	}
