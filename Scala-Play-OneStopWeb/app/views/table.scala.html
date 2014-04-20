@@ -1,0 +1,33 @@
+@(addType: String, addLink: Call)(body: Html)(implicit flash: play.api.mvc.Flash)
+
+    @flash.get("success").map { message =>
+        <div class="alert alert-success">
+            <strong>Done!</strong> @message
+        </div>
+    }
+    
+    @flash.get("error").map { message =>
+        <div class="alert alert-danger">
+            <strong>Error!</strong> @message
+        </div>
+    }
+
+    
+    
+    @body
+    
+        
+    <script>
+		$(function(){
+		   	$("#main-table").dataTable({
+		   		"bStateSave": true
+			}) 
+		})
+	</script>
+        
+    <div >
+        
+        <a class="btn btn-success" id="add" href="@addLink">Add a new @addType</a>
+        
+    </div>
+    
