@@ -156,7 +156,6 @@ object AdminUsers extends Controller with Secured {
 			User.findByEmail( username ).map { user =>
 				userEditForm.bindFromRequest.fold(
 					formWithErrors => {
-						Logger.debug( formWithErrors.toString )
 						BadRequest( html.adminUserEdit( user, id, formWithErrors ) )
 					},
 					userToUpdate => {
@@ -185,8 +184,10 @@ object AdminUsers extends Controller with Secured {
 				if ( userToDelete.get.email == user.email ) {
 					Home.flashing( "error" -> "Can't delete your own account!" )
 				} else {
+					val userToDelete = User.findById(id).get
+					val name = userToDelete.firstName + " " + userToDelete.lastName
 					User.delete( id )
-					Home.flashing( "success" -> "User has been deleted" )
+					Home.flashing( "success" -> "%s has been deleted".format( name ) )
 				}
 
 			}.getOrElse( Forbidden )
