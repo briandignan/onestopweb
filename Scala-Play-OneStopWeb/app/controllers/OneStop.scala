@@ -14,7 +14,6 @@ import views._
 object OneStop extends Controller with Secured {
 
 	def index = authenticatedPage( html.index( _ ) )
-	def itemList = authenticatedPage( html.itemList( _ ) )
 	def customerList = authenticatedPage( html.customerList( _ ) )
 	def vendorList = authenticatedPage( html.vendorList( _ ) )
 	def reports = authenticatedPage( html.reports( _ ) )
