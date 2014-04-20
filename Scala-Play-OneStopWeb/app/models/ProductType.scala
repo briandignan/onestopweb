@@ -22,7 +22,7 @@ object ProductType {
 			SQL(
 				"""
 					SELECT * FROM ProductType 
-					WHERE id = {id}
+					WHERE ProductTypeID = {id}
 				"""
 			).on(
 				'id -> id
@@ -35,7 +35,7 @@ object ProductType {
 			SQL(
 				"""
 					SELECT * FROM ProductType 
-					WHERE name = {name}
+					WHERE Name = {name}
 				"""
 			).on(
 				'name -> name
@@ -72,8 +72,8 @@ object ProductType {
 			SQL(
 				"""
 					UPDATE ProductType
-					SET name = {name} 
-					WHERE id = {id}
+					SET Name = {name} 
+					WHERE ProductTypeID = {id}
 				"""
 			).on(
 				'id -> id,
@@ -87,7 +87,7 @@ object ProductType {
 			SQL(
 				"""
 					DELETE FROM ProductType 
-					WHERE id = {id}
+					WHERE ProductTypeID = {id}
 				"""
 			).on(
 				'id -> id
