@@ -166,7 +166,7 @@ object User {
 	 */
 	def delete( id: Long ) = {
 		DB.withConnection { implicit connection =>
-			SQL( "DELETE FROM AdminUsers WHERE id = {id}" ).on( 'id -> id ).executeUpdate()
+			SQL( "DELETE FROM AdminUsers WHERE UserID = {id}" ).on( 'id -> id ).executeUpdate()
 		}
 	}
 
