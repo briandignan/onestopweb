@@ -1,5 +1,42 @@
-@(user: User)
+@(loggedInUser: User, pairs: Seq[(Item, ProductType)])(implicit flash: play.api.mvc.Flash)
 
-@main(user, "Inventory") {
-	<p>Items page</p>	
+@main(loggedInUser, "Inventory") {
+    
+    @table("item", routes.ItemController.create) {
+    	
+	    <table id="main-table">
+	        <thead>
+	            <tr>
+	                <th>SKU</th>
+	                <th>Description</th>
+	                <th>Department</th>
+	                <th>Unit Price</th>
+	                <th>Quantity On Hand</th>
+	                <th>Quantity Per Order</th>
+	                <th>Quantity Low Point</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	
+	            @pairs.map { 
+	                case (item, productType) => {
+	                    <tr>
+	                        <td><a href="@routes.ItemController.edit(item.id.get)">@item.sku</a></td>
+	                    	<td>@item.description</td>
+	                    	<td>@productType.name</td>
+	                    	<td>@item.unitPrice</td>
+	                    	<td>@item.quantityOnHand</td>
+	                    	<td>@item.quantityPerOrder</td>
+	                    	<td>@item.quantityLowPoint</td>
+	                    </tr>
+	                }
+	            }
+	
+	        </tbody>
+	    </table>
+    	
+    }
+        
 }
+
+            
