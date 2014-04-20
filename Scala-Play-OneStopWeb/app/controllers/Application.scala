@@ -54,7 +54,6 @@ trait Secured {
 	 * Retrieve the connected user email.
 	 */
 	private def username( request: RequestHeader ) = {
-		Logger.info( "username called" )
 		request.session.get( "email" )
 	}
 
