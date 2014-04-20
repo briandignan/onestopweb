@@ -1,0 +1,30 @@
+@(loggedInUser: User, productTypes: Seq[ProductType])(implicit flash: play.api.mvc.Flash)
+
+@main(loggedInUser, "Inventory") {
+    
+    @table("department", routes.ProductTypeController.create) {
+    	
+	    <table id="main-table">
+	        <thead>
+	            <tr>
+	                <th>Name</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	
+	            @productTypes.map { 
+	                case productType => {
+	                    <tr>
+	                        <td><a href="@routes.ProductTypeController.edit(productType.id.get)">@productType.name</a></td>
+	                    </tr>
+	                }
+	            }
+	
+	        </tbody>
+	    </table>
+    	
+    }
+        
+}
+
+            
