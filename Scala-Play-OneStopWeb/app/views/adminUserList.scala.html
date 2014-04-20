@@ -1,4 +1,4 @@
-@(user: User, currentPage: Page[User])(implicit flash: play.api.mvc.Flash)
+@(user: User, users: Seq[User])(implicit flash: play.api.mvc.Flash)
 
 
 @main(user, "Settings") {
@@ -16,42 +16,41 @@
     }
 
 
-    
-    @Option(currentPage.items).filterNot(_.isEmpty).map { users =>
-        <table id="main-table">
-            <thead>
-                <tr>
-                    <th>Email Address</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                </tr>
-            </thead>
-            <tbody>
 
-                @users.map { 
-                    case user => {
-                        <tr>
-                            <td><a href="@routes.AdminUsers.edit(user.id.get)">@user.email</a></td>
-                            <td>
-                                @user.firstName
-                            </td>
-                            <td>
-                                @user.lastName
-                            </td>
-                        </tr>
-                    }
+    <table id="main-table">
+        <thead>
+            <tr>
+                <th>Email Address</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @users.map { 
+                case user => {
+                    <tr>
+                        <td><a href="@routes.AdminUsers.edit(user.id.get)">@user.email</a></td>
+                        <td>
+                            @user.firstName
+                        </td>
+                        <td>
+                            @user.lastName
+                        </td>
+                    </tr>
                 }
+            }
 
-            </tbody>
-        </table>
-        
-        <script>
-		  $(function(){
-		    $("#main-table").dataTable({
-		    	"bStateSave": true
+        </tbody>
+    </table>
+    
+    <script>
+		$(function(){
+		   	$("#main-table").dataTable({
+		   		"bStateSave": true
 			}) 
-		  })
-		</script>
+		})
+	</script>
         
     <div >
         
@@ -59,14 +58,6 @@
         
     </div>
         
-        
-    }.getOrElse {
-        
-        <div class="well">
-            <em>Nothing to display</em>
-        </div>
-        
-    }
 
         
 }

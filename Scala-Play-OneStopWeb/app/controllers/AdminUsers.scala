@@ -94,8 +94,8 @@ object AdminUsers extends Controller with Secured {
 		implicit request =>
 			User.findByEmail( username ).map { user =>
 				Ok( html.adminUserList(
-					user,
-					User.list( pageSize = 10000 ) ) )
+						user,
+						User.findAll ) )
 			}.getOrElse( Forbidden )
 	}
 
