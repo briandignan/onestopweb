@@ -102,7 +102,7 @@ object AdminUsers extends Controller with Secured {
 	/**
 	 * Display tbe 'create user' form
 	 */
-	def create = IsAuthenticated { username =>
+	def create() = IsAuthenticated { username =>
 		implicit request =>
 			User.findByEmail( username ).map { user =>
 				Ok( html.adminUserCreate( user, userCreateForm ) )
@@ -112,7 +112,7 @@ object AdminUsers extends Controller with Secured {
 	/**
 	 * Handle the 'create user' form submission
 	 */
-	def add = IsAuthenticated { username =>
+	def add() = IsAuthenticated { username =>
 		implicit request =>
 			User.findByEmail( username ).map { user =>
 				userCreateForm.bindFromRequest.fold(
