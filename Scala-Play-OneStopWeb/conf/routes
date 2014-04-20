@@ -4,11 +4,17 @@
 
 GET     /                           controllers.OneStop.index
 GET		/items						controllers.OneStop.itemList
-GET		/departments				controllers.OneStop.departmentList
 GET		/customers					controllers.OneStop.customerList
 GET		/vendors					controllers.OneStop.vendorList
 GET		/reports					controllers.OneStop.reports
 GET		/othersettings				controllers.OneStop.settingsOther
+
+GET		/departments				controllers.ProductTypeController.list
+GET		/departments/new			controllers.ProductTypeController.create
+POST 	/departments				controllers.ProductTypeController.add
+GET		/departments/:id			controllers.ProductTypeController.edit(id: Long)
+POST	/departments/:id			controllers.ProductTypeController.update(id: Long)
+POST	/departments/:id/delete		controllers.ProductTypeController.delete(id: Long)
 
 GET		/adminusers/listold			controllers.AdminUsers.listOld(p:Int ?= 0, s:Int ?= 2, f ?= "")
 GET		/adminusers					controllers.AdminUsers.list
