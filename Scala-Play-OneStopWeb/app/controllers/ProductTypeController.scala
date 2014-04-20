@@ -29,7 +29,7 @@ object ProductTypeController extends Controller with Secured {
 	val productTypeForm = Form(
 		mapping(
 			"id" -> ignored( NotAssigned: Pk[Long] ),
-			"name" -> email.verifying( uniqueNameConstraint )
+			"name" -> nonEmptyText.verifying( uniqueNameConstraint )
 			)( ProductType.apply )( ProductType.unapply ) )
 
 	lazy val uniqueNameConstraint = Constraint[String]( Some( "Unique" ), "" )( checkUniqueName )
@@ -53,38 +53,81 @@ object ProductTypeController extends Controller with Secured {
 			}.getOrElse( Forbidden )
 	}
 	
+	/**
+	 * Displayed the 'edit product-type' form
+	 */
 	def edit(id: Long) = IsAuthenticated { username => 
 		implicit request =>
 			User.findByEmail( username ).map { user =>
-				Ok
+				ProductType.findById(id) match {
+					case Some(productType) => {
+						Ok( html.productTypeEdit(
+							user,
+							productType.id.get,
+							productTypeForm.fill(productType) ) )
+					}
+					case None => NotFound
+				}
 			}.getOrElse( Forbidden )
 	}
-	
-	def create() = IsAuthenticated { username =>
-		implicit request =>
-			User.findByEmail( username ).map { user =>
-				Ok
-			}.getOrElse( Forbidden )
-	}
-	
-	def add() = IsAuthenticated { username =>
-		implicit request =>
-			User.findByEmail( username ).map { user =>
-				Ok
-			}.getOrElse( Forbidden )
-	}
-	
+		
+	/**
+	 * Handles the 'edit product-type' form
+	 */
 	def update(id: Long) = IsAuthenticated { username =>
 		implicit request =>
 			User.findByEmail( username ).map { user =>
-				Ok
+				productTypeForm.bindFromRequest.fold(
+					formWithErrors => {
+						BadRequest( html.productTypeEdit(user, id, formWithErrors))
+					},
+					productType => {
+						ProductType.update(id, productType)
+						Home.flashing( "success" -> "%s has been updated".format( productType.name ) )
+					}
+				)
 			}.getOrElse( Forbidden )
 	}
 	
+	/**
+	 * Displays the 'create product-type' form
+	 */
+	def create() = IsAuthenticated { username =>
+		implicit request =>
+			User.findByEmail( username ).map { user =>
+				Ok( html.productTypeCreate(
+						user,
+						productTypeForm))
+			}.getOrElse( Forbidden )
+	}
+	
+	/**
+	 * Handles the 'create product-type' form
+	 */
+	def add() = IsAuthenticated { username =>
+		implicit request =>
+			User.findByEmail( username ).map { user =>
+				productTypeForm.bindFromRequest.fold (
+					formWithErrors => {
+						BadRequest( html.productTypeCreate( user, formWithErrors ) )
+					},
+					productType => {
+						ProductType.create( productType )
+						Home.flashing( "success" -> "%s was added".format( productType.name ) )
+					}
+				)
+			}.getOrElse( Forbidden )
+	}
+	
+	/**
+	 * Deletes a product-type from the database
+	 */
 	def delete(id: Long) = IsAuthenticated { username =>
 		implicit request =>
 			User.findByEmail( username ).map { user =>
-				Ok
+				val name = ProductType.findById(id).get.name
+				ProductType.delete( id )
+				Home.flashing( "success" -> "%s was deleted".format( name ) )
 			}.getOrElse( Forbidden )
 	}
 	
