@@ -1,0 +1,28 @@
+@(loggedInUser: User, productTypeForm: Form[ProductType])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.f) }
+
+@main(loggedInUser, "Inventory") {
+	
+	<div class="centered-form">
+	
+		@helper.form(action=routes.ProductTypeController.add()) {
+			
+			<fieldset>
+			
+				@inputText(productTypeForm("name"), '_label -> "Name")
+			
+			</fieldset>
+			
+			<div class="actions">
+	            <input type="submit" value="Insert" class="btn btn-primary"> or 
+	            <a href="@routes.ProductTypeController.list()" class="btn btn-default">Cancel</a> 
+	        </div>
+			
+		}
+	
+	</div>
+	
+}

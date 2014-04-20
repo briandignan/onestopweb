@@ -1,0 +1,37 @@
+@(loggedInUser: User, id: Long, productForm: Form[ProductType])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.f) }
+
+@main(loggedInUser, "Inventory") {
+	
+	<div class="centered-form">
+	
+		
+		@productForm.globalError.map { error => 
+			<div class="alert alert-danger"><strong>Error!</strong> @error.message</div>
+		}
+		
+		@helper.form(action=routes.ProductTypeController.update(id)) {
+			
+			<fieldset>
+			
+				@inputText(productForm("name"), '_label -> "Name")
+			
+			</fieldset>
+			
+			<div class="actions">
+	            <input type="submit" value="Update" class="btn btn-primary"> or 
+	            <a href="@routes.ProductTypeController.list()" class="btn btn-default">Cancel</a> 
+	        </div>
+			
+		}
+		
+		@form(routes.ProductTypeController.delete(id), 'class -> "topRight") {
+	        <input type="submit" value="Delete" class="btn btn-danger">
+	    }
+    
+    </div>
+	
+}
