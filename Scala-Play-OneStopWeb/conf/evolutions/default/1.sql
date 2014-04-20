@@ -11,8 +11,9 @@ CREATE TABLE AdminUsers (
   PRIMARY KEY (UserID)
 );
 
-CREATE UNIQUE INDEX  EmailIndex ON AdminUsers (EmailAddress);
+CREATE UNIQUE INDEX  AdminUsers_Email_Index ON AdminUsers (EmailAddress);
 
+/* Test records inserted via Global class. Required because of password salting */
 
 CREATE TABLE ProductType(
 	ProductTypeID INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -20,6 +21,22 @@ CREATE TABLE ProductType(
 	PRIMARY KEY (ProductTypeID)
 );
 
+CREATE UNIQUE INDEX  ProductType_Name_Index ON ProductType (Name);
+
+INSERT INTO ProductType (Name) VALUES ('Drinks');
+INSERT INTO ProductType (Name) VALUES ('Ice Cream');
+INSERT INTO ProductType (Name) VALUES ('Frozen Foods');
+INSERT INTO ProductType (Name) VALUES ('Tobacco');
+INSERT INTO ProductType (Name) VALUES ('Pharmacy');
+INSERT INTO ProductType (Name) VALUES ('Household');
+INSERT INTO ProductType (Name) VALUES ('Confections');
+INSERT INTO ProductType (Name) VALUES ('Snacks');
+INSERT INTO ProductType (Name) VALUES ('School Supplies');
+INSERT INTO ProductType (Name) VALUES ('Toiletries');
+INSERT INTO ProductType (Name) VALUES ('Chips');
+INSERT INTO ProductType (Name) VALUES ('Party Supplies');
+INSERT INTO ProductType (Name) VALUES ('Misc');
+INSERT INTO ProductType (Name) VALUES ('Lottery');
 
 /* 
  * Doesn't contain UnitCost because the cost for a single item could vary from
@@ -38,7 +55,7 @@ CREATE TABLE Inventory(
 );
 
 ALTER TABLE Inventory ADD CONSTRAINT FK_Inventory_ProductType FOREIGN KEY (ProductTypeID) REFERENCES ProductType (ProductTypeID) ON DELETE RESTRICT ON UPDATE CASCADE;
-
+CREATE UNIQUE INDEX  Inventory_SKU_Index ON Inventory (SKU);
 
 CREATE TABLE Vendors(
 	VendorID INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -52,6 +69,8 @@ CREATE TABLE Vendors(
 	Fax VARCHAR(255),
 	PRIMARY KEY (VendorID)
 );
+
+CREATE UNIQUE INDEX  Vendors_Name_Index ON Vendors (Name);
 
 
 /* Contains which vendors offer which items for sale, and at what cost */
@@ -75,6 +94,9 @@ CREATE TABLE Customers(
 	PromotionDevice TINYINT UNSIGNED NOT NULL DEFAULT 0, /* 0 if no promotion, 1 for phone, 2 for email */
 	PRIMARY KEY (CustomerID)
 );
+
+CREATE UNIQUE INDEX  Customers_PhoneNumber_Index ON Customers (PhoneNumber);
+CREATE UNIQUE INDEX  Customers_EmailAddress_Index ON Customers (EmailAddress);
 
 
 CREATE TABLE CustomerOrders(
