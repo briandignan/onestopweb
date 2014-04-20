@@ -3,7 +3,8 @@
 # ~~~~
 
 GET     /                           controllers.OneStop.index
-GET		/inventory					controllers.OneStop.inventoryList
+GET		/items						controllers.OneStop.itemList
+GET		/departments				controllers.OneStop.departmentList
 GET		/customers					controllers.OneStop.customerList
 GET		/vendors					controllers.OneStop.vendorList
 GET		/reports					controllers.OneStop.reports
