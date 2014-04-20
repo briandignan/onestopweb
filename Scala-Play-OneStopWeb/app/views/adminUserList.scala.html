@@ -3,62 +3,36 @@
 
 @main(user, "Settings") {
     
-    @flash.get("success").map { message =>
-        <div class="alert alert-success">
-            <strong>Done!</strong> @message
-        </div>
+    @table("admin user", routes.AdminUsers.create()) {
+    	
+	    <table id="main-table">
+	        <thead>
+	            <tr>
+	                <th>Email Address</th>
+	                <th>First Name</th>
+	                <th>Last Name</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	
+	            @users.map { 
+	                case user => {
+	                    <tr>
+	                        <td><a href="@routes.AdminUsers.edit(user.id.get)">@user.email</a></td>
+	                        <td>
+	                            @user.firstName
+	                        </td>
+	                        <td>
+	                            @user.lastName
+	                        </td>
+	                    </tr>
+	                }
+	            }
+	
+	        </tbody>
+	    </table>
+    	
     }
-    
-    @flash.get("error").map { message =>
-        <div class="alert alert-danger">
-            <strong>Error!</strong> @message
-        </div>
-    }
-
-
-
-    <table id="main-table">
-        <thead>
-            <tr>
-                <th>Email Address</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-            </tr>
-        </thead>
-        <tbody>
-
-            @users.map { 
-                case user => {
-                    <tr>
-                        <td><a href="@routes.AdminUsers.edit(user.id.get)">@user.email</a></td>
-                        <td>
-                            @user.firstName
-                        </td>
-                        <td>
-                            @user.lastName
-                        </td>
-                    </tr>
-                }
-            }
-
-        </tbody>
-    </table>
-    
-    <script>
-		$(function(){
-		   	$("#main-table").dataTable({
-		   		"bStateSave": true
-			}) 
-		})
-	</script>
-        
-    <div >
-        
-        <a class="btn btn-success" id="add" href="@routes.AdminUsers.create()">Add a new admin user</a>
-        
-    </div>
-        
-
         
 }
 
