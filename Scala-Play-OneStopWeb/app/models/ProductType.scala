@@ -1,12 +1,15 @@
 package models
 
+import play.api.db._
+import play.api.Play.current
+
 import anorm._
 import anorm.SqlParser._
 
 case class ProductType( id: Pk[Long] = NotAssigned, name: String )
 
 object ProductType {
-
+	
 	val simpleParser = {
 		get[Pk[Long]]( "ProductType.ProductTypeID" ) ~
 		get[String]( "ProductType.Name" ) map {
@@ -15,27 +18,81 @@ object ProductType {
 	}
 	
 	def findById( id: Long ): Option[ProductType] = {
-		None
+		DB.withConnection { implicit connection => 
+			SQL(
+				"""
+					SELECT * FROM ProductType 
+					WHERE id = {id}
+				"""
+			).on(
+				'id -> id
+			).as(ProductType.simpleParser.singleOpt)
+		}
 	}
 	
 	def findByName( name: String ): Option[ProductType] = {
-		None
+		DB.withConnection { implicit connection => 
+			SQL(
+				"""
+					SELECT * FROM ProductType 
+					WHERE name = {name}
+				"""
+			).on(
+				'name -> name
+			).as(ProductType.simpleParser.singleOpt)
+		}
 	}
 	
 	def findAll(): Seq[ProductType] = {
-		Seq()
+		DB.withConnection { implicit connection =>
+			SQL(
+				"""
+					SELECT * from ProductType
+				"""
+			).as(ProductType.simpleParser *)
+		}
 	}
 	
 	def create( productType: ProductType ): Int = {
-		0
+		DB.withConnection { implicit connection =>
+			SQL(
+				"""
+					INSERT INTO ProductType 
+					(Name) VALUES 
+					({name})
+				"""
+			).on(
+				'name -> productType.name
+			).executeUpdate()
+		}
 	}
 	
 	def update( id: Long, productType: ProductType ): Int = {
-		0
+		DB.withConnection { implicit connection => 
+			SQL(
+				"""
+					UPDATE ProductType
+					SET name = {name} 
+					WHERE id = {id}
+				"""
+			).on(
+				'id -> id,
+				'name -> productType.name
+			).executeUpdate()
+		}
 	}
 	
 	def delete( id: Long ): Int = {
-		0
+		DB.withConnection { implicit connection => 
+			SQL(
+				"""
+					DELETE FROM ProductType 
+					WHERE id = {id}
+				"""
+			).on(
+				'id -> id
+			).executeUpdate()
+		}
 	}
 	
 }
