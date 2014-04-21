@@ -1,0 +1,47 @@
+@(loggedInUser: User, id: Long, customerForm: Form[Customer], promotionDevices: Seq[(String, String)])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.f) }
+
+@main(loggedInUser, "Customers") {
+	
+	<div class="centered-form">
+	
+		
+		@customerForm.globalError.map { error => 
+			<div class="alert alert-danger"><strong>Error!</strong> @error.message</div>
+		}
+		
+		@helper.form(action=routes.CustomerManagementController.update(id)) {
+			
+			<fieldset>
+			
+				@inputText(customerForm("firstName"), '_label -> "First Name")
+				@inputText(customerForm("lastName"), '_label -> "Last Name")
+				@inputText(customerForm("email"), '_label -> "Email Address")
+				@inputText(customerForm("phone"), '_label -> "Phone Number")
+				
+				@select(
+	                customerForm("promotionDevice"), 
+	                promotionDevices, 
+	                '_label -> "Promotion Device", '_default -> "-- Choose a promotion device --",
+	                '_showConstraints -> false
+	            )
+			
+			</fieldset>
+			
+			<div class="actions">
+	            <input type="submit" value="Update" class="btn btn-primary"> or 
+	            <a href="@routes.CustomerManagementController.list()" class="btn btn-default">Cancel</a> 
+	        </div>
+			
+		}
+		
+		@form(routes.CustomerManagementController.delete(id), 'class -> "topRight") {
+	        <input type="submit" value="Delete" class="btn btn-danger">
+	    }
+    
+    </div>
+	
+}
