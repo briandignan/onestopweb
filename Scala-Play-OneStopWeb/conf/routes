@@ -3,10 +3,21 @@
 # ~~~~
 
 GET     /                           controllers.OneStop.index
-GET		/customers					controllers.OneStop.customerList
-GET		/vendors					controllers.OneStop.vendorList
 GET		/reports					controllers.OneStop.reports
 GET		/othersettings				controllers.OneStop.settingsOther
+
+GET		/customers/sales			controllers.CustomerSalesController.list
+GET		/customers/promotions		controllers.CustomerPromotionsController.list
+
+GET		/customers					controllers.CustomerManagementController.list
+GET		/customers/new				controllers.CustomerManagementController.create
+POST	/customers					controllers.CustomerManagementController.add
+GET		/customers/:id				controllers.CustomerManagementController.edit(id: Long)
+POST	/customers/:id				controllers.CustomerManagementController.update(id: Long)
+POST	/customers/:id/delete		controllers.CustomerManagementController.delete(id: Long)
+
+GET		/vendors					controllers.VendorManagementController.list
+GET		/vendors/purchases			controllers.VendorPurchasesController.list
 
 GET		/items						controllers.ItemController.list
 GET		/items/new					controllers.ItemController.create
