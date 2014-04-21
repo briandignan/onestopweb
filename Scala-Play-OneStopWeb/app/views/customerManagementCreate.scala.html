@@ -1,0 +1,10 @@
+@* adminUserCreate Template File *@
+@(loggedInUser: User, customerForm: Form[Customer])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.f) }
+
+@main(loggedInUser, "Customers") {
+	<p>Create Customer</p>
+}
