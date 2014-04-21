@@ -1,0 +1,36 @@
+@(user: User, pairs: Seq[(Customer,PromotionDevice)])(implicit flash: play.api.mvc.Flash)
+
+
+@main(user, "Customers") {
+    
+    @table("customer", routes.CustomerManagementController.create()) {
+    	
+	    <table id="main-table">
+	        <thead>
+	            <tr>
+	                <th>Name</th>
+	                <th>Email Address</th>
+	                <th>Phone Number</th>
+	                <th>Opt-In</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	
+	            @pairs.map { 
+	                case (customer, promotionDevice) => {
+	                    <tr>
+	                        <td><a href="@routes.CustomerManagementController.edit(customer.id.get)">@customer.firstName @customer.lastName</a></td>
+	                        <td>@customer.email</td>
+	                        <td>@customer.phoneNumber</td>
+	                        <td>@promotionDevice.name</td>
+	                        
+	                    </tr>
+	                }
+	            }
+	
+	        </tbody>
+	    </table>
+    	
+    }
+        
+}
