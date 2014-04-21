@@ -7,17 +7,15 @@
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" type="image/x-icon" href="@routes.Assets.at("images/favicon.ico")">
-        <!-- <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")"> -->
-        <link rel="stylesheet" type="text/css" media="screen" href="http://getbootstrap.com/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
+        <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/jquery.dataTables.css")">
         <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/navbar-fixed-top.css")">
         <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/table.css")">
         <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/dataTables.bootstrap.css")">
-        <!-- <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.7.1.js")"></script>  -->
-        <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
-        <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.8.2.min.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.dataTables.min.js")"></script>
         <script type="text/javascript" src="@routes.Assets.at("javascripts/dataTables.bootstrap.js")"></script>
-        <!-- <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-play-1.7.1.js")"></script> -->
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-play-1.7.1.js")"></script>
         <script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap.js")"></script>
         
         <title>OneStopWeb</title>
@@ -26,17 +24,6 @@
     <!-- Fixed navbar -->
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
-      	<!-- 
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand @("active".when(page == "OneStopWeb"))" href="@routes.OneStop.index()">OneStopWeb</a>
-        </div>
-         -->
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="@("active".when(page == "OneStopWeb"))"><a href="@routes.OneStop.index()">OneStopWeb</a></li>
@@ -47,8 +34,21 @@
                 <li><a href="@routes.ProductTypeController.list()">Departments</a></li>
               </ul>
             </li> 
-            <li class="@("active".when(page == "Customers"))"><a href="@routes.OneStop.customerList()">Customers</a></li>
-            <li class="@("active".when(page == "Vendors"))"><a href="@routes.OneStop.vendorList()">Vendors</a></li>
+            <li class="dropdown @("active".when(page == "Customers"))">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Customers <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="@routes.CustomerManagementController.list()">Manage Customers</a></li>
+                <li><a href="@routes.CustomerSalesController.list()">Sales</a></li>
+                <li><a href="@routes.CustomerPromotionsController.list()">Promotions</a></li>
+              </ul>
+            </li> 
+            <li class="dropdown @("active".when(page == "Vendors"))">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Vendors <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="@routes.VendorManagementController.list()">Manage Vendors</a></li>
+                <li><a href="@routes.VendorPurchasesController.list()">Purchases</a></li>
+              </ul>
+            </li> 
             <li class="@("active".when(page == "Reports"))"><a href="@routes.OneStop.reports()">Reports</a></li>
             <li class="dropdown @("active".when(page == "Settings"))">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Settings <b class="caret"></b></a>
