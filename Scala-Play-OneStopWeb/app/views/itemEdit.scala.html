@@ -1,0 +1,49 @@
+@(loggedInUser: User, id: Long, itemForm: Form[Item], productTypes: Seq[(String, String)])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.f) }
+
+@main(loggedInUser, "Inventory") {
+	
+	<div class="centered-form">
+	
+		
+		@itemForm.globalError.map { error => 
+			<div class="alert alert-danger"><strong>Error!</strong> @error.message</div>
+		}
+		
+		@helper.form(action=routes.ItemController.update(id)) {
+			
+			<fieldset>
+			
+				@inputText(itemForm("sku"), '_label -> "SKU")
+				@inputText(itemForm("description"), '_label -> "Description")
+				@inputText(itemForm("unitPrice"), '_label -> "Unit Price")
+				@inputText(itemForm("quantityOnHand"), '_label -> "Quantity On Hand")
+				@inputText(itemForm("quantityPerOrder"), '_label -> "Quantity Per Order")
+				@inputText(itemForm("quantityLowPoint"), '_label -> "Quantity Low Point")
+				
+				@select(
+	                itemForm("productType"), 
+	                productTypes, 
+	                '_label -> "Department", '_default -> "-- Choose a department --",
+	                '_showConstraints -> false
+	            )
+			
+			</fieldset>
+			
+			<div class="actions">
+	            <input type="submit" value="Update" class="btn btn-primary"> or 
+	            <a href="@routes.ItemController.list()" class="btn btn-default">Cancel</a> 
+	        </div>
+			
+		}
+		
+		@form(routes.ItemController.delete(id), 'class -> "topRight") {
+	        <input type="submit" value="Delete" class="btn btn-danger">
+	    }
+    
+    </div>
+	
+}

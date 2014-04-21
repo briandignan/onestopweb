@@ -1,0 +1,40 @@
+@(loggedInUser: User, itemForm: Form[Item], productTypes: Seq[(String, String)])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.f) }
+
+@main(loggedInUser, "Inventory") {
+	
+	<div class="centered-form">
+	
+		@helper.form(action=routes.ItemController.add()) {
+			
+			<fieldset>
+			
+				@inputText(itemForm("sku"), '_label -> "SKU")
+				@inputText(itemForm("description"), '_label -> "Description")
+				@inputText(itemForm("unitPrice"), '_label -> "Unit Price")
+				@inputText(itemForm("quantityOnHand"), '_label -> "Quantity On Hand")
+				@inputText(itemForm("quantityPerOrder"), '_label -> "Quantity Per Order")
+				@inputText(itemForm("quantityLowPoint"), '_label -> "Quantity Low Point")
+				
+				@select(
+	                itemForm("productType"), 
+	                productTypes, 
+	                '_label -> "Department", '_default -> "-- Choose a department --",
+	                '_showConstraints -> false
+	            )
+			
+			</fieldset>
+			
+			<div class="actions">
+	            <input type="submit" value="Insert" class="btn btn-primary"> or 
+	            <a href="@routes.ItemController.list()" class="btn btn-default">Cancel</a> 
+	        </div>
+			
+		}
+	
+	</div>
+	
+}

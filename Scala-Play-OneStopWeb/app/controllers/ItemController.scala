@@ -18,7 +18,42 @@ import views._
 
 object ItemController extends Controller with Secured {
 
+	val home = Redirect( routes.ItemController.list() )
 	
+	val itemEditForm = Form(
+		mapping(
+			"id" -> ignored(NotAssigned:Pk[Long]),
+			"productType" -> longNumber,
+			"sku" -> nonEmptyText,
+			"description" -> nonEmptyText,
+			"unitPrice" -> bigDecimal,
+			"quantityOnHand" -> number,
+			"quantityPerOrder" -> number,
+			"quantityLowPoint" -> number			
+		)(Item.apply)(Item.unapply)
+	)
+	
+	val itemCreateForm = Form(
+		mapping(
+			"id" -> ignored(NotAssigned:Pk[Long]),
+			"productType" -> longNumber,
+			"sku" -> nonEmptyText.verifying( uniqueSkuConstraint ),
+			"description" -> nonEmptyText,
+			"unitPrice" -> bigDecimal,
+			"quantityOnHand" -> number,
+			"quantityPerOrder" -> number,
+			"quantityLowPoint" -> number			
+		)(Item.apply)(Item.unapply)
+	)
+	
+	lazy val uniqueSkuConstraint = Constraint[String]( Some("Unique"), "")( checkUniqueSku )
+	
+	def checkUniqueSku( sku: String ): ValidationResult = {
+		Item.findBySku( sku ) match {
+			case Some( item ) => Invalid( "An item with SKU: " + sku + " already exists in the database." )
+			case None => Valid
+		}
+	}
 	
 	def list() = IsAuthenticated { username => 
 		implicit request => {
@@ -33,7 +68,16 @@ object ItemController extends Controller with Secured {
 	def edit(id: Long) = IsAuthenticated { username => 
 		implicit request => {
 			User.findByEmail( username ).map { user => 
-				Ok
+				Item.findById(id) match {
+					case Some(item) => {
+						Ok( html.itemEdit(
+								user,
+								id,
+								itemEditForm.fill(item),
+								ProductType.options))
+					}
+					case None => NotFound
+				}
 			}.getOrElse( Forbidden )
 		}
 	}
@@ -41,7 +85,15 @@ object ItemController extends Controller with Secured {
 	def update(id: Long) = IsAuthenticated { username => 
 		implicit request => {
 			User.findByEmail( username ).map { user => 
-				Ok
+				itemEditForm.bindFromRequest.fold ( 
+					formWithErrors => {
+						BadRequest( html.itemEdit( user, id, formWithErrors, ProductType.options ) )
+					},
+					itemToUpdate => {
+						Item.update( id, itemToUpdate )
+						home.flashing( "success" -> "%s has been updated".format( itemToUpdate.sku ) )
+					}
+				)
 			}.getOrElse( Forbidden )
 		}
 	}
@@ -49,7 +101,10 @@ object ItemController extends Controller with Secured {
 	def create() = IsAuthenticated { username => 
 		implicit request => {
 			User.findByEmail( username ).map { user => 
-				Ok
+				Ok( html.itemCreate(
+						user,
+						itemCreateForm,
+						ProductType.options))
 			}.getOrElse( Forbidden )
 		}
 	}
@@ -57,7 +112,13 @@ object ItemController extends Controller with Secured {
 	def add() = IsAuthenticated { username => 
 		implicit request => {
 			User.findByEmail( username ).map { user => 
-				Ok
+				itemCreateForm.bindFromRequest.fold (
+					formWithErrors => BadRequest( html.itemCreate( user, formWithErrors, ProductType.options ) ),
+					itemToAdd => {
+						Item.create( itemToAdd )
+						home.flashing( "success" -> "%s has been created.".format( itemToAdd.sku ) )
+					}
+				)
 			}.getOrElse( Forbidden )
 		}
 	}
@@ -65,7 +126,13 @@ object ItemController extends Controller with Secured {
 	def delete(id: Long) = IsAuthenticated { username => 
 		implicit request => {
 			User.findByEmail( username ).map { user => 
-				Ok
+				Item.findById(id) match {
+					case Some( item ) => {
+						Item.delete(id)
+						home.flashing( "success" -> "%s was deleted.".format( item.sku ) )
+					}
+					case None => NotFound
+				}
 			}.getOrElse( Forbidden )
 		}
 	}
