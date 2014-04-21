@@ -2688,18 +2688,40 @@ ALTER TABLE VendorItems ADD CONSTRAINT FK_VendorItems_Inventory FOREIGN KEY (Ite
 ALTER TABLE VendorItems ADD CONSTRAINT FK_VendorItems_Vendor FOREIGN KEY (VendorID) REFERENCES Vendors (VendorID) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 
+CREATE TABLE PromotionDevices(
+	PromotionDeviceID INT UNSIGNED NOT NULL,
+	Name VARCHAR(255) NOT NULL,
+	PRIMARY KEY (PromotionDeviceID)
+);
+
+CREATE UNIQUE INDEX  PromotionDevices_Name_Index ON PromotionDevices (Name);
+
+INSERT INTO PromotionDevices (PromotionDeviceID, Name) VALUES (1, 'Not active');
+INSERT INTO PromotionDevices (PromotionDeviceID, Name) VALUES (2, 'Phone');
+INSERT INTO PromotionDevices (PromotionDeviceID, Name) VALUES (3, 'Email');
+INSERT INTO PromotionDevices (PromotionDeviceID, Name) VALUES (4, 'Phone and Email');
+
+
 CREATE TABLE Customers(
 	CustomerID INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	FirstName VARCHAR(255) NOT NULL,
 	LastName VARCHAR(255) NOT NULL,
 	PhoneNumber VARCHAR(255),
 	EmailAddress VARCHAR(255),
-	PromotionDevice TINYINT UNSIGNED NOT NULL DEFAULT 0, /* 0 if no promotion, 1 for phone, 2 for email */
+	PromotionDeviceID INT UNSIGNED NOT NULL DEFAULT 0, /* 1 if no promotion, 2 for phone, 3 for email, 4 for both */
 	PRIMARY KEY (CustomerID)
 );
 
+ALTER TABLE Customers ADD CONSTRAINT FK_Customers_PromotionDevices FOREIGN KEY (PromotionDeviceID) REFERENCES PromotionDevices (PromotionDeviceID) ON DELETE RESTRICT ON UPDATE CASCADE;
 CREATE UNIQUE INDEX  Customers_PhoneNumber_Index ON Customers (PhoneNumber);
 CREATE UNIQUE INDEX  Customers_EmailAddress_Index ON Customers (EmailAddress);
+
+
+INSERT INTO Customers (CustomerID, FirstName, LastName, PhoneNumber, EmailAddress, PromotionDeviceID) VALUES (1, 'George', 'Washington', null, null, 1);
+INSERT INTO Customers (CustomerID, FirstName, LastName, PhoneNumber, EmailAddress, PromotionDeviceID) VALUES (2, 'Thomas', 'Jefferson', '3013213213', 'thomas.jefferson@presidents.com', 4);
+INSERT INTO Customers (CustomerID, FirstName, LastName, PhoneNumber, EmailAddress, PromotionDeviceID) VALUES (3, 'John', 'Adams', null, 'john.adams@presidents.com', 1);
+INSERT INTO Customers (CustomerID, FirstName, LastName, PhoneNumber, EmailAddress, PromotionDeviceID) VALUES (4, 'Abraham', 'Lincoln', '4101234567', 'abe.lincoln@presidents.com', 2);
+INSERT INTO Customers (CustomerID, FirstName, LastName, PhoneNumber, EmailAddress, PromotionDeviceID) VALUES (5, 'Teddy', 'Roosevelt', null, 'teddy.roosevelt@presidents.com', 3);
 
 
 CREATE TABLE CustomerOrders(
@@ -2736,6 +2758,29 @@ CREATE TABLE CustomerFavorites(
 
 ALTER TABLE CustomerFavorites ADD CONSTRAINT FK_CustomerFavorites_Customers FOREIGN KEY (CustomerID) REFERENCES Customers (CustomerID) ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE CustomerFavorites ADD CONSTRAINT FK_CustomerFavorites_ProductType FOREIGN KEY (ProductTypeID) REFERENCES ProductType (ProductTypeID) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+/* George Washington favorites */
+INSERT INTO CustomerFavorites (CustomerID, ProductTypeID) SELECT 1, ProductTypeID FROM ProductType WHERE Name = 'Drinks';
+INSERT INTO CustomerFavorites (CustomerID, ProductTypeID) SELECT 1, ProductTypeID FROM ProductType WHERE Name = 'Frozen Foods';
+INSERT INTO CustomerFavorites (CustomerID, ProductTypeID) SELECT 1, ProductTypeID FROM ProductType WHERE Name = 'Tobacco';
+
+/* Thomas Jefferson favorites */
+INSERT INTO CustomerFavorites (CustomerID, ProductTypeID) SELECT 2, ProductTypeID FROM ProductType WHERE Name = 'Snacks';
+
+/* John Adams has no favorites */
+
+/* Abraham Lincoln favorites */
+INSERT INTO CustomerFavorites (CustomerID, ProductTypeID) SELECT 4, ProductTypeID FROM ProductType WHERE Name = 'Frozen Foods';
+INSERT INTO CustomerFavorites (CustomerID, ProductTypeID) SELECT 4, ProductTypeID FROM ProductType WHERE Name = 'School Supplies';
+
+/* Teddy Roosevelt favorites */
+INSERT INTO CustomerFavorites (CustomerID, ProductTypeID) SELECT 5, ProductTypeID FROM ProductType WHERE Name = 'Tobacco';
+INSERT INTO CustomerFavorites (CustomerID, ProductTypeID) SELECT 5, ProductTypeID FROM ProductType WHERE Name = 'Pharmacy';
+INSERT INTO CustomerFavorites (CustomerID, ProductTypeID) SELECT 5, ProductTypeID FROM ProductType WHERE Name = 'Snacks';
+INSERT INTO CustomerFavorites (CustomerID, ProductTypeID) SELECT 5, ProductTypeID FROM ProductType WHERE Name = 'Misc';
+INSERT INTO CustomerFavorites (CustomerID, ProductTypeID) SELECT 5, ProductTypeID FROM ProductType WHERE Name = 'Ice Cream';
+INSERT INTO CustomerFavorites (CustomerID, ProductTypeID) SELECT 5, ProductTypeID FROM ProductType WHERE Name = 'Drinks';
+
 
 
 CREATE TABLE VendorOrders(
