@@ -100,3 +100,7 @@ form div.clearfix.error .input-prepend span.add-on,form div.clearfix.error .inpu
 
 .centered-form{position: absolute; left: 20%; top: 20%; width: 40%;}
 
+
+.favorite_template {
+    display: none;
+}
