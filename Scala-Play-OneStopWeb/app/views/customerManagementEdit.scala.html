@@ -4,11 +4,25 @@
 
 @implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.f) }
 
-@favoriteField(field: Field, className: String = "favorite") = {
+@favoriteFieldOld(field: Field, className: String = "favorite") = {
     @input(field, '_label -> "Favorites", '_class -> className) { (id, name, value, _) =>
         <input type="text" name="@name" value="@value"> 
         <a class="removeFavorite btn btn-danger">Remove</a>
     }
+}
+
+@favoriteField(field: Field, className: String = "favorite") = {
+	<div class=@className>
+		@select(
+	              field, 
+	              productTypes, 
+	              '_label -> "Favorite", '_default -> "-- Choose a favorite --",
+	              '_showConstraints -> false
+	       )
+		
+	   	<a class="removeFavorite btn btn-danger">Remove</a>
+	   	<span class="help-inline"></span> 
+   	</div>
 }
 
 @main(loggedInUser, "Customers") {
@@ -101,7 +115,7 @@
         
         var renumber = function(phones) {
             $('.favorite').each(function(i) {
-                $('input', this).each(function() {
+                $('select', this).each(function() {
                     $(this).attr('name', $(this).attr('name').replace(/favorites\[.+?\]/g, 'favorites[' + i + ']'))
                 })
             })
