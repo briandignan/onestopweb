@@ -2756,7 +2756,7 @@ CREATE TABLE CustomerFavorites(
 	PRIMARY KEY (CustomerID, ProductTypeID)
 );
 
-ALTER TABLE CustomerFavorites ADD CONSTRAINT FK_CustomerFavorites_Customers FOREIGN KEY (CustomerID) REFERENCES Customers (CustomerID) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE CustomerFavorites ADD CONSTRAINT FK_CustomerFavorites_Customers FOREIGN KEY (CustomerID) REFERENCES Customers (CustomerID) ON DELETE CASCADE ON UPDATE CASCADE; /* Gets deleted along with the customer */
 ALTER TABLE CustomerFavorites ADD CONSTRAINT FK_CustomerFavorites_ProductType FOREIGN KEY (ProductTypeID) REFERENCES ProductType (ProductTypeID) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 /* George Washington favorites */
