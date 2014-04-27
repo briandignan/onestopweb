@@ -26,4 +26,35 @@ object CustomerSalesController extends Controller with Secured {
 		}
 	}
 	
+	def create() = IsAuthenticated { username => 
+		implicit request => {
+			User.findByEmail(username).map { user =>
+				Ok
+			}.getOrElse( Forbidden )
+		}
+	}
+	
+	def add() = IsAuthenticated { username => 
+		implicit request => {
+			User.findByEmail(username).map { user =>
+				Ok
+			}.getOrElse( Forbidden )
+		}
+	}
+	
+	def view(id: Long) = IsAuthenticated { username => 
+		implicit request => {
+			User.findByEmail(username).map { user =>
+				Ok
+			}.getOrElse( Forbidden )
+		}
+	}
+	
+	def delete(id: Long) = IsAuthenticated { username => 
+		implicit request => {
+			User.findByEmail(username).map { user =>
+				Ok
+			}.getOrElse( Forbidden )
+		}
+	}
 }
