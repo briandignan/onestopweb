@@ -11,19 +11,28 @@
     }
 }
 
+
 @favoriteField(field: Field, className: String = "favorite") = {
-	<div class=@className>
+	<div class="@className">
+	<table>
+		<tr>
+		<td>
 		@select(
 	              field, 
 	              productTypes, 
 	              '_label -> "Favorite", '_default -> "-- Choose a favorite --",
 	              '_showConstraints -> false
 	       )
-		
-	   	<a class="removeFavorite btn btn-danger">Remove</a>
+		</td>
+		<td class="removeCol">
+	   	<a class="removeFavorite btn btn-danger pull-right">Remove</a>
+	   	</td>
 	   	<span class="help-inline"></span> 
+	   	</tr>
+	</table>
    	</div>
 }
+
 
 @main(loggedInUser, "Customers") {
 	
@@ -98,7 +107,7 @@
          
         $('.addFavorite').live('click', function(e) {
             var template = $('.favorite_template')
-            template.before('<div class="twipsies well favorite">' + template.html() + '</div>')
+            template.before('<div class="favorite">' + template.html() + '</div>')
             renumber()
         })
         
