@@ -7,6 +7,11 @@ GET		/reports					controllers.OneStop.reports
 GET		/othersettings				controllers.OneStop.settingsOther
 
 GET		/customers/sales			controllers.CustomerSalesController.list
+GET		/customers/sales/new		controllers.CustomerSalesController.create
+POST	/customers/sales			controllers.CustomerSalesController.add
+GET		/customers/sales/:id		controllers.CustomerSalesController.view(id: Long)
+POST	/customers/sales/:id/delete controllers.CustomerSalesController.delete(id: Long)
+
 GET		/customers/promotions		controllers.CustomerPromotionsController.list
 
 GET		/customers					controllers.CustomerManagementController.list
