@@ -104,3 +104,27 @@ form div.clearfix.error .input-prepend span.add-on,form div.clearfix.error .inpu
 .favorite_template {
     display: none;
 }
+
+
+/*
+label {
+	padding-top: 6px;
+	font-size: 13px;
+	line-height: 18px;
+	float: left;
+	width: 130px;
+	text-align: right;
+	color: #404040;
+}*/
+
+.removeCol {
+	padding-left: 20px;
+}
+
+.favorite-dropdown {
+	float: left;	
+}
+
+.favorite-button {
+	float: right;
+}
