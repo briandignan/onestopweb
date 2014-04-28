@@ -1,0 +1,106 @@
+@(loggedInUser: User, customerOrderForm: Form[CustomerOrder], customers: Seq[(String, String)], items: Seq[(String, String)])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.f) }
+
+@itemGroup(field: Field, className: String = "item") = {
+	
+	<div class="twipsies well @className">
+		@select(
+			field("itemId"),
+			items,
+			'_label -> "Item", '_default -> "-- Choose an item --",
+			'_showConstraints -> false	
+		)
+		@inputText( field("quantity"), '_label -> "Quantity" )
+		@inputText( field("unitPrice"), '_label -> "Unit Price" )
+	</div>
+}
+
+@main(loggedInUser, "Customers") {
+	
+	<div class="centered-form">
+	
+		@helper.form(action=routes.CustomerSalesController.add()) {
+			
+			<fieldset class="disabled-field">
+			
+				@select(
+					customerOrderForm("customerId"),
+					customers,
+					'_label -> "Customer", '_default -> "-- Choose a customer --",
+					'_showConstraints -> false
+				)
+				
+				@inputText(customerOrderForm("dateTime"), '_label -> "Transaction Date/Time")
+				
+				<div class="items">
+				
+				
+					@repeat(customerOrderForm("items"), min = 0) { item =>
+		                
+		                @itemGroup(item)
+		    
+		            }
+				
+					@**
+					* Hidden template used to create more items
+					**@
+					@itemGroup(customerOrderForm("items[x]"), "item_template")
+				
+					
+				
+				</div>
+			
+			</fieldset>
+			
+			<div class="actions">
+				<a href="@routes.CustomerSalesController.list()" class="btn btn-default">Back</a>
+			</div>
+			
+		}
+	
+	
+	</div>
+	
+    <script type="text/javascript" charset="utf-8">
+        
+        $('.removeItem').live('click', function(e) {
+            $(this).parents('.item').remove()
+            renumber()
+        })
+        
+        // Search for the element with an "addProfile" class attribute. 
+        $('.addItem').live('click', function(e) {
+            var template = $('.item_template')
+            template.before('<div class="twipsies well item">' + template.html() + '</div>')
+            renumber()
+        })
+        
+        // -- renumber fields
+        
+        // Rename fields to have a coherent payload like:
+        //
+        // informations[0].label
+        // informations[0].email
+        // informations[0].phones[0]
+        // informations[0].phones[1]
+        // ...
+        //
+        // This is probably not the easiest way to do it. A jQuery plugin would help.
+        
+        var renumber = function(phones) {
+            $('.item').each(function(i) {
+                $('input', this).each(function() {
+                    $(this).attr('name', $(this).attr('name').replace(/items\[.+?\]/g, 'items[' + i + ']'))
+                })
+                $('select', this).each(function() {
+                    $(this).attr('name', $(this).attr('name').replace(/items\[.+?\]/g, 'items[' + i + ']'))
+                })
+            })
+        }
+        
+    </script>
+	
+}
