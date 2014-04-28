@@ -1,5 +1,39 @@
-@(user: User)
+@(user: User, summaryList: Seq[CustomerOrderSummary])(implicit flash: play.api.mvc.Flash)
 
 @main(user, "Customers") {
-	<p>Customer Sales</p>	
+	
+	@table("order", routes.CustomerSalesController.create() ) {
+		
+		<table id="main-table">
+			<thead>
+				<tr>
+					<td>Order ID</td>
+					<td>Customer</td>
+					<td>DateTime</td>
+					<td>Quantity Items</td>
+					<td>Total Sales Price</td>
+				</tr>
+			</thead>
+			
+			<tbody>
+				@summaryList.map {
+					case summary => {
+						<tr>
+							<td><a href="@routes.CustomerSalesController.view(summary.customerOrderId.get)">@summary.customerOrderId</a></td>
+							<td>
+								@summary.customer.map { cust =>
+									@cust.firstName @cust.lastName
+								}
+							</td>
+							<td>@summary.dateTime</td>
+							<td>@summary.quantityItems</td>
+							<td>$@summary.totalSalesPrice</td>
+						</tr>
+					}
+				}
+			</tbody>
+			
+		</table>
+		
+	}
 }
