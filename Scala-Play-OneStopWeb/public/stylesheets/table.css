@@ -128,3 +128,12 @@ label {
 .favorite-button {
 	float: right;
 }
+
+.item_template {
+	display: none;
+}
+
+.disabled-field {
+	pointer-events: none; 
+	cursor: default;
+}
