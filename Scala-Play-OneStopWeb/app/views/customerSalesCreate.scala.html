@@ -16,12 +16,21 @@
 		)
 		@inputText( field("quantity"), '_label -> "Quantity" )
 		@inputText( field("unitPrice"), '_label -> "Unit Price" )
+
+		
 	</div>
 }
 
 @main(loggedInUser, "Customers") {
 	
 	<div class="centered-form">
+	
+		<!-- 
+		<div class="ui-widget">
+		  <label for="tags">Tags: </label>
+		  <input id="autocomplete-tag" name="blah">
+		</div>
+		 -->
 	
 		@helper.form(action=routes.CustomerSalesController.add()) {
 			
@@ -100,6 +109,36 @@
                 })
             })
         }
+
+        $(function() {
+            var availableTags = [
+              "ActionScript",
+              "AppleScript",
+              "Asp",
+              "BASIC",
+              "C",
+              "C++",
+              "Clojure",
+              "COBOL",
+              "ColdFusion",
+              "Erlang",
+              "Fortran",
+              "Groovy",
+              "Haskell",
+              "Java",
+              "JavaScript",
+              "Lisp",
+              "Perl",
+              "PHP",
+              "Python",
+              "Ruby",
+              "Scala",
+              "Scheme"
+            ];
+            $( "#autocomplete-tag" ).autocomplete({
+              source: availableTags
+            });
+          });
         
     </script>
 	
