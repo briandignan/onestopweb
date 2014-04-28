@@ -18,10 +18,31 @@ import views._
 
 object CustomerSalesController extends Controller with Secured {
 
+	
+	val home = Redirect( routes.CustomerSalesController.list() )
+	
+	val createCustomer = Form(
+		mapping(
+			"customerOrderId" -> ignored(NotAssigned:Pk[Long]),
+			"customerId" -> optional(longNumber),
+			"dateTime" -> date("yyyy-MM-dd HH:mm:ss"),
+			"items" -> seq(
+				mapping(
+					"customerOrderId" -> ignored(NotAssigned:Pk[Long]),
+					"itemId" -> longNumber,
+					"quantity" -> number,
+					"unitPrice" -> bigDecimal
+				)(CustomerOrderItem.apply)(CustomerOrderItem.unapply)
+			)
+		)(CustomerOrder.apply)(CustomerOrder.unapply)
+	)
+	
+	
+	
 	def list() = IsAuthenticated { username => 
 		implicit request => {
 			User.findByEmail(username).map { user =>
-				Ok( html.customerSalesList( user ) )
+				Ok( html.customerSalesList( user, CustomerOrderSummary.list ) )
 			}.getOrElse( Forbidden )
 		}
 	}
@@ -29,7 +50,7 @@ object CustomerSalesController extends Controller with Secured {
 	def create() = IsAuthenticated { username => 
 		implicit request => {
 			User.findByEmail(username).map { user =>
-				Ok
+				Ok( html.customerSalesCreate( user, createCustomer, Customer.options, Item.options ) )
 			}.getOrElse( Forbidden )
 		}
 	}
@@ -37,7 +58,13 @@ object CustomerSalesController extends Controller with Secured {
 	def add() = IsAuthenticated { username => 
 		implicit request => {
 			User.findByEmail(username).map { user =>
-				Ok
+				createCustomer.bindFromRequest.fold(
+					formWithErrors => BadRequest( html.customerSalesCreate( user, formWithErrors, Customer.options, Item.options ) ),
+					customerOrder => {
+						CustomerOrder.create( customerOrder )
+						home.flashing( "success" -> "The transaction was added" )
+					}
+				)
 			}.getOrElse( Forbidden )
 		}
 	}
@@ -45,7 +72,9 @@ object CustomerSalesController extends Controller with Secured {
 	def view(id: Long) = IsAuthenticated { username => 
 		implicit request => {
 			User.findByEmail(username).map { user =>
-				Ok
+				CustomerOrder.findById(id).map { order => 
+					Ok( html.customerSalesView ( user, createCustomer.fill( order ), Customer.options, Item.options ) )
+				}.getOrElse( NotFound )
 			}.getOrElse( Forbidden )
 		}
 	}
