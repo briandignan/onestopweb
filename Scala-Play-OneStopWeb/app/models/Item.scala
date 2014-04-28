@@ -130,5 +130,23 @@ object Item {
 		}
 	}
 	
+	val nameMapper = {
+		get[Pk[Long]]( "Inventory.ItemID" ) ~
+		get[String]( "Inventory.SKU" ) ~
+		get[String]( "Inventory.Description" ) map {
+			case id~sku~description => ( id.toString, sku + " " + description )
+		}
+	}
+	
+	def options(): Seq[(String, String)] = {
+		DB.withConnection { implicit connection =>
+			SQL(
+				"""
+					SELECT ItemID, SKU, Description FROM Inventory
+				"""
+			).as( nameMapper * )
+		}
+	}
+	
 	
 }

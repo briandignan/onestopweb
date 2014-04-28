@@ -243,4 +243,24 @@ object Customer {
 		}
 	}
 	
+	val nameMapper = {
+		get[Pk[Long]]("Customers.CustomerID") ~
+		get[String]("Customers.FirstName") ~
+		get[String]("Customers.LastName") map {
+			case id~firstname~lastname => ( id.toString(), firstname + " " + lastname )
+		}
+	}
+	
+	def options(): Seq[(String, String)] = {
+		DB.withConnection { implicit connection =>
+			SQL(
+				"""
+					SELECT CustomerID, FirstName, LastName FROM Customers
+					ORDER BY FirstName ASC, LastName ASC
+				"""
+			).as( nameMapper * )
+		}
+	}
+	
+	
 }
