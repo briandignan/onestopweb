@@ -2,7 +2,6 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-
 import play.api.data._
 import play.api.data.validation.Constraint
 import play.api.data.validation.ValidationResult
@@ -10,11 +9,12 @@ import play.api.data.validation.Valid
 import play.api.data.validation.Invalid
 import play.api.data.Forms._
 import play.api.templates.HtmlFormat.Appendable
-
 import anorm._
-
 import models._
 import views._
+import java.util.Date
+import java.text.SimpleDateFormat
+
 
 object CustomerSalesController extends Controller with Secured {
 
@@ -50,7 +50,9 @@ object CustomerSalesController extends Controller with Secured {
 	def create() = IsAuthenticated { username => 
 		implicit request => {
 			User.findByEmail(username).map { user =>
-				Ok( html.customerSalesCreate( user, createCustomer, Customer.options, Item.options ) )
+				val sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+				Ok( html.customerSalesCreate( user, createCustomer.bind(Map("dateTime"->sdf.format(new Date))), Customer.options, Item.options ) )
+				//Ok( html.customerSalesCreate( user, createCustomer, Customer.options, Item.options ) )
 			}.getOrElse( Forbidden )
 		}
 	}
