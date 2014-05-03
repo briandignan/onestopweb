@@ -2735,6 +2735,10 @@ CREATE TABLE CustomerOrders(
 ALTER TABLE CustomerOrders ADD CONSTRAINT FK_CustomerOrders_Customers FOREIGN KEY (CustomerID) REFERENCES Customers (CustomerID) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 
+INSERT INTO CustomerOrders (CustomerOrderID, CustomerID, DateTime) VALUES (1, null, '2014-04-22 13:30:05');
+INSERT INTO CustomerOrders (CustomerOrderID, CustomerID, DateTime) VALUES (2, 1, '2014-04-30 16:30:00');
+
+
 CREATE TABLE CustomerOrderItems(
 	CustomerOrderID INT UNSIGNED NOT NULL,
 	ItemID INT UNSIGNED NOT NULL,
@@ -2748,6 +2752,15 @@ CREATE TABLE CustomerOrderItems(
 
 ALTER TABLE CustomerOrderItems ADD CONSTRAINT FK_CustomerOrderItems_CustomerOrders FOREIGN KEY (CustomerOrderID) REFERENCES CustomerOrders (CustomerOrderID) ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE CustomerOrderItems ADD CONSTRAINT FK_CustomerOrderItems_Inventory FOREIGN KEY (ItemID) REFERENCES Inventory (ItemID) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+INSERT INTO CustomerOrderItems (CustomerOrderID, ItemID, QuantityOrdered, UnitPrice) VALUES (1, (SELECT ItemID FROM Inventory WHERE SKU = '714415094706'), 5, 2.99);
+INSERT INTO CustomerOrderItems (CustomerOrderID, ItemID, QuantityOrdered, UnitPrice) VALUES (1, (SELECT ItemID FROM Inventory WHERE SKU = '644209412006'), 2, 3.75);
+INSERT INTO CustomerOrderItems (CustomerOrderID, ItemID, QuantityOrdered, UnitPrice) VALUES (1, (SELECT ItemID FROM Inventory WHERE SKU = '716165152804'), 1, 7.99);
+INSERT INTO CustomerOrderItems (CustomerOrderID, ItemID, QuantityOrdered, UnitPrice) VALUES (2, (SELECT ItemID FROM Inventory WHERE SKU = '716165177814'), 1, 3.99);
+INSERT INTO CustomerOrderItems (CustomerOrderID, ItemID, QuantityOrdered, UnitPrice) VALUES (2, (SELECT ItemID FROM Inventory WHERE SKU = '716165200109'), 1, 3.49);
+INSERT INTO CustomerOrderItems (CustomerOrderID, ItemID, QuantityOrdered, UnitPrice) VALUES (2, (SELECT ItemID FROM Inventory WHERE SKU = '716165179481'), 2, 2.29);
+INSERT INTO CustomerOrderItems (CustomerOrderID, ItemID, QuantityOrdered, UnitPrice) VALUES (2, (SELECT ItemID FROM Inventory WHERE SKU = '051386380026'), 1, 4.99);
+
 
 
 CREATE TABLE CustomerFavorites(
@@ -2820,7 +2833,7 @@ drop table if exists Inventory;
 drop table if exists Vendors;
 drop table if exists VendorItems;
 drop table if exists Customers;
-drop table if exists CustomerItems;
+drop table if exists PromotionDevices;
 drop table if exists CustomerOrderItems;
 drop table if exists CustomerFavorites;
 drop table if exists VendorOrders;
