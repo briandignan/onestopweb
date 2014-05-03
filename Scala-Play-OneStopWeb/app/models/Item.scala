@@ -142,7 +142,7 @@ object Item {
 		DB.withConnection { implicit connection =>
 			SQL(
 				"""
-					SELECT ItemID, SKU, Description FROM Inventory
+					SELECT ItemID, SKU, Description FROM Inventory ORDER BY SKU
 				"""
 			).as( nameMapper * )
 		}
