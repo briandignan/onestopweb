@@ -27,9 +27,9 @@ object ItemController extends Controller with Secured {
 			"sku" -> nonEmptyText,
 			"description" -> nonEmptyText,
 			"unitPrice" -> bigDecimal,
-			"quantityOnHand" -> number,
-			"quantityPerOrder" -> number,
-			"quantityLowPoint" -> number			
+			"quantityOnHand" -> longNumber,
+			"quantityPerOrder" -> longNumber,
+			"quantityLowPoint" -> longNumber			
 		)(Item.apply)(Item.unapply)
 	)
 	
@@ -40,9 +40,9 @@ object ItemController extends Controller with Secured {
 			"sku" -> nonEmptyText.verifying( uniqueSkuConstraint ),
 			"description" -> nonEmptyText,
 			"unitPrice" -> bigDecimal,
-			"quantityOnHand" -> number,
-			"quantityPerOrder" -> number,
-			"quantityLowPoint" -> number			
+			"quantityOnHand" -> longNumber,
+			"quantityPerOrder" -> longNumber,
+			"quantityLowPoint" -> longNumber			
 		)(Item.apply)(Item.unapply)
 	)
 	
