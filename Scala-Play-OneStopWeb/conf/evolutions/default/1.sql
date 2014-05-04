@@ -65,7 +65,7 @@ INSERT INTO Inventory (ProductTypeID, SKU, Description, UnitPrice, QuantityOnHan
 INSERT INTO Inventory (ProductTypeID, SKU, Description, UnitPrice, QuantityOnHand, QuantityPerOrder, QuantityLowPoint) SELECT ProductTypeID, '716165177814','Elements King Size Papers 32 ct','3.99','53','2','1' FROM ProductType WHERE Name = 'Tobacco';
 INSERT INTO Inventory (ProductTypeID, SKU, Description, UnitPrice, QuantityOnHand, QuantityPerOrder, QuantityLowPoint) SELECT ProductTypeID, '716165200109','Skunk Hawaiian Skunk 32 ct','3.49','0','22','3' FROM ProductType WHERE Name = 'Tobacco';
 INSERT INTO Inventory (ProductTypeID, SKU, Description, UnitPrice, QuantityOnHand, QuantityPerOrder, QuantityLowPoint) SELECT ProductTypeID, '716165179481','Raw Pre-Rolled Tips','2.29','22','37','32' FROM ProductType WHERE Name = 'Tobacco';
-
+INSERT INTO Inventory (ProductTypeID, SKU, Description, UnitPrice, QuantityOnHand, QuantityPerOrder, QuantityLowPoint) SELECT ProductTypeID, '028000515751','Nesquik Strawberry Low Fat','2.19','0','11','7' FROM ProductType WHERE Name = 'Drinks';
 
 
 CREATE TABLE Vendors(
@@ -84,6 +84,36 @@ CREATE TABLE Vendors(
 CREATE UNIQUE INDEX  Vendors_Name_Index ON Vendors (Name);
 
 
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (1,'Berliner','Hyattsville','Maryland','United States','eddie@berlinerfoods.com','2404177679',null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (2,'C & C',null,null,null,null,null,null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (3,'Canada Dry',null,null,null,null,null,null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (4,'Costco',null,null,null,null,null,null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (5,'DMV','Manassas','Virginia','United States','dmvdistributors1@gmail.com','7032316069',null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (6,'Frtio Lay','College Park','Maryland','United States',null,null,null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (7,'Giant','College Park','Maryland','United States',null,null,null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (8,'Gourmet Innovations Inc.','Fort Lauderdale','Florida','United States',null,'8775027326',null,'9549729997');
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (9,'Inter Trade Corp.com','Beltsville','Maryland','United States','info@intertradecorp.com','3015958999','301595998 ',null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (10,'J Trading (Kim)','College Park','Maryland','United States','hijskim@naver.com','7034623329',null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (11,'J&L',null,null,null,null,null,null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (12,'Kmart','College Park','Maryland','United States',null,null,null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (13,'Lowes','College Park','Maryland','United States',null,null,null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (14,'Maryland Lottery','College Park','Maryland','United States',null,null,null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (15,'N/a',null,null,null,null,null,null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (16,'Q & A Services Inc','Bethesda','Maryland','United States',null,'2025697173',null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (17,'Randys','Toledo','Ohio','United States',null,'4193493226',null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (18,'Red Bull/ Lift Off Distribution','Savage','Maryland','USA',null,'3014905542',null,'3014904715');
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (19,'Restaurant Depot','College Park','Maryland','United States',null,null,null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (20,'RJ Reynolds','College Park','Maryland','United States','ngaruin@rjrt.com','8009742227',null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (21,'Safeway','College Park','Maryland','United States',null,null,null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (22,'Sams Club','College Park','Maryland','United States',null,null,null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (23,'Shoppers','College Park','Maryland','United States',null,null,null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (24,'Skeye','Maumee','Ohio','United States',null,'8664708806',null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (25,'Triple C','Baltimore','Maryland','USA',null,'8004428742',null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (26,'UTZ',null,null,null,null,null,null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (27,'Walmart',null,null,null,null,null,null,null);
+INSERT INTO Vendors (VendorID, Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax) VALUES (28,'Wholesale Rolling Papers','College Park','Maryland','United States',null,null,null,null);
+
+
 /* Contains which vendors offer which items for sale, and at what cost */
 CREATE TABLE VendorItems ( 
 	VendorID INT UNSIGNED NOT NULL,
@@ -95,6 +125,13 @@ CREATE TABLE VendorItems (
 ALTER TABLE VendorItems ADD CONSTRAINT FK_VendorItems_Inventory FOREIGN KEY (ItemID) REFERENCES Inventory (ItemID) ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE VendorItems ADD CONSTRAINT FK_VendorItems_Vendor FOREIGN KEY (VendorID) REFERENCES Vendors (VendorID) ON DELETE RESTRICT ON UPDATE CASCADE;
 
+INSERT INTO VendorItems (VendorID, ItemID, UnitCost) VALUES ((SELECT VendorID From Vendors WHERE Name='Berliner'), (SELECT ItemID FROM Inventory WHERE SKU='028000515751'),'1.095');
+INSERT INTO VendorItems (VendorID, ItemID, UnitCost) VALUES ((SELECT VendorID From Vendors WHERE Name='Walmart'), (SELECT ItemID FROM Inventory WHERE SKU='714415094706'),'1.495');
+INSERT INTO VendorItems (VendorID, ItemID, UnitCost) VALUES ((SELECT VendorID From Vendors WHERE Name='Walmart'), (SELECT ItemID FROM Inventory WHERE SKU='644209412006'),'1.745');
+INSERT INTO VendorItems (VendorID, ItemID, UnitCost) VALUES ((SELECT VendorID From Vendors WHERE Name='Wholesale Rolling Papers'), (SELECT ItemID FROM Inventory WHERE SKU='716165152804'),'3.995');
+INSERT INTO VendorItems (VendorID, ItemID, UnitCost) VALUES ((SELECT VendorID From Vendors WHERE Name='Wholesale Rolling Papers'), (SELECT ItemID FROM Inventory WHERE SKU='716165177814'),'1.995');
+INSERT INTO VendorItems (VendorID, ItemID, UnitCost) VALUES ((SELECT VendorID From Vendors WHERE Name='Wholesale Rolling Papers'), (SELECT ItemID FROM Inventory WHERE SKU='716165200109'),'1.745');
+INSERT INTO VendorItems (VendorID, ItemID, UnitCost) VALUES ((SELECT VendorID From Vendors WHERE Name='Wholesale Rolling Papers'), (SELECT ItemID FROM Inventory WHERE SKU='716165179481'),'1.145');
 
 CREATE TABLE PromotionDevices(
 	PromotionDeviceID INT UNSIGNED NOT NULL,
@@ -214,6 +251,17 @@ CREATE TABLE VendorOrders(
 ALTER TABLE VendorOrders ADD CONSTRAINT FK_VendorOrders_Vendor FOREIGN KEY (VendorID) REFERENCES Vendors (VendorID) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 
+INSERT INTO VendorOrders (VendorOrderID, VendorID, DateOrdered, DateDelivered) VALUES (1, (SELECT VendorID from Vendors WHERE Name='Wholesale Rolling Papers'), '2014-02-22 12:35:00', '2014-02-25 15:42:30');
+INSERT INTO VendorOrders (VendorOrderID, VendorID, DateOrdered, DateDelivered) VALUES (2, (SELECT VendorID from Vendors WHERE Name='Walmart'), '2014-03-10 14:35:00', '2014-03-22 13:25:00');
+INSERT INTO VendorOrders (VendorOrderID, VendorID, DateOrdered, DateDelivered) VALUES (3, (SELECT VendorID from Vendors WHERE Name='Berliner'), '2014-03-25 08:30:00', '2014-03-26 13:30:00');
+INSERT INTO VendorOrders (VendorOrderID, VendorID, DateOrdered, DateDelivered) VALUES (4, (SELECT VendorID from Vendors WHERE Name='Walmart'), '2014-03-25 08:30:00', '2014-03-25 09:25:00');
+INSERT INTO VendorOrders (VendorOrderID, VendorID, DateOrdered, DateDelivered) VALUES (5, (SELECT VendorID from Vendors WHERE Name='Wholesale Rolling Papers'), '2014-03-26 10:20:35', '2014-03-27 17:45:00');
+INSERT INTO VendorOrders (VendorOrderID, VendorID, DateOrdered, DateDelivered) VALUES (6, (SELECT VendorID from Vendors WHERE Name='Berliner'), '2014-04-02 10:35:00', '2014-04-04 09:25:00');
+INSERT INTO VendorOrders (VendorOrderID, VendorID, DateOrdered, DateDelivered) VALUES (7, (SELECT VendorID from Vendors WHERE Name='Walmart'), '2014-04-03 10:35:00', '2014-04-06 15:25:00');
+INSERT INTO VendorOrders (VendorOrderID, VendorID, DateOrdered, DateDelivered) VALUES (8, (SELECT VendorID from Vendors WHERE Name='Wholesale Rolling Papers'), '2014-04-05 14:40:00', '2014-04-06 18:25:00');
+
+
+
 CREATE TABLE VendorOrderItems(
 	VendorOrderID INT UNSIGNED NOT NULL,
 	ItemID INT UNSIGNED NOT NULL,
@@ -229,6 +277,20 @@ CREATE TABLE VendorOrderItems(
 ALTER TABLE VendorOrderItems ADD CONSTRAINT FK_VendorOrdersItems_VendorOrders FOREIGN KEY (VendorOrderID) REFERENCES VendorOrders (VendorOrderID) ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE VendorOrderItems ADD CONSTRAINT FK_VendorOrdersItems_Inventory FOREIGN KEY (ItemID) REFERENCES Inventory (ItemID) ON DELETE RESTRICT ON UPDATE CASCADE;
 
+
+INSERT INTO VendorOrderItems (VendorOrderID, ItemID, QuantityOrdered, UnitCost) VALUES (1, (SELECT ItemID FROM Inventory WHERE SKU='716165152804'), 10, '3.995');
+INSERT INTO VendorOrderItems (VendorOrderID, ItemID, QuantityOrdered, UnitCost) VALUES (1, (SELECT ItemID FROM Inventory WHERE SKU='716165200109'), 5, '1.745');
+INSERT INTO VendorOrderItems (VendorOrderID, ItemID, QuantityOrdered, UnitCost) VALUES (1, (SELECT ItemID FROM Inventory WHERE SKU='716165179481'), 20, '1.145');
+INSERT INTO VendorOrderItems (VendorOrderID, ItemID, QuantityOrdered, UnitCost) VALUES (2, (SELECT ItemID FROM Inventory WHERE SKU='714415094706'), 50, '1.495');
+INSERT INTO VendorOrderItems (VendorOrderID, ItemID, QuantityOrdered, UnitCost) VALUES (3, (SELECT ItemID FROM Inventory WHERE SKU='028000515751'), 20, '1.095');
+INSERT INTO VendorOrderItems (VendorOrderID, ItemID, QuantityOrdered, UnitCost) VALUES (4, (SELECT ItemID FROM Inventory WHERE SKU='714415094706'), 20, '1.495');
+INSERT INTO VendorOrderItems (VendorOrderID, ItemID, QuantityOrdered, UnitCost) VALUES (4, (SELECT ItemID FROM Inventory WHERE SKU='644209412006'), 50, '1.745');
+INSERT INTO VendorOrderItems (VendorOrderID, ItemID, QuantityOrdered, UnitCost) VALUES (5, (SELECT ItemID FROM Inventory WHERE SKU='716165177814'), 100, '1.995');
+INSERT INTO VendorOrderItems (VendorOrderID, ItemID, QuantityOrdered, UnitCost) VALUES (5, (SELECT ItemID FROM Inventory WHERE SKU='716165179481'), 100, '1.145');
+INSERT INTO VendorOrderItems (VendorOrderID, ItemID, QuantityOrdered, UnitCost) VALUES (6, (SELECT ItemID FROM Inventory WHERE SKU='028000515751'), 50, '1.095');
+INSERT INTO VendorOrderItems (VendorOrderID, ItemID, QuantityOrdered, UnitCost) VALUES (7, (SELECT ItemID FROM Inventory WHERE SKU='644209412006'), 150, '1.745');
+INSERT INTO VendorOrderItems (VendorOrderID, ItemID, QuantityOrdered, UnitCost) VALUES (8, (SELECT ItemID FROM Inventory WHERE SKU='716165177814'), 50, '1.995');
+INSERT INTO VendorOrderItems (VendorOrderID, ItemID, QuantityOrdered, UnitCost) VALUES (8, (SELECT ItemID FROM Inventory WHERE SKU='716165179481'), 25, '1.145');
 
 
 
