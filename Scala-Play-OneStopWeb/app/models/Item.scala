@@ -11,9 +11,9 @@ case class Item(
 		sku: String, 
 		description: String, 
 		unitPrice: BigDecimal, 
-		quantityOnHand: Int, 
-		quantityPerOrder: Int, 
-		quantityLowPoint: Int )
+		quantityOnHand: Long, 
+		quantityPerOrder: Long, 
+		quantityLowPoint: Long )
 
 object Item {
 
@@ -25,9 +25,9 @@ object Item {
 		get[String]( "Inventory.SKU" ) ~
 		get[String]( "Inventory.Description" ) ~
 		get[java.math.BigDecimal]( "Inventory.UnitPrice" ) ~
-		get[Int]( "Inventory.QuantityOnHand" ) ~
-		get[Int]( "Inventory.QuantityPerOrder" ) ~
-		get[Int]( "Inventory.QuantityLowPoint" ) map {
+		get[Long]( "Inventory.QuantityOnHand" ) ~
+		get[Long]( "Inventory.QuantityPerOrder" ) ~
+		get[Long]( "Inventory.QuantityLowPoint" ) map {
 			case id ~ productTypeId ~ sku ~ description ~ unitPrice ~ quantityOnHand ~ quantityPerOrder ~ quantityLowPoint => Item( id, productTypeId, sku, description, unitPrice, quantityOnHand, quantityPerOrder, quantityLowPoint ) 
 		}
 	

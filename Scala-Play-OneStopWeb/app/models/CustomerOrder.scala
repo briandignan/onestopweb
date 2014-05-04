@@ -55,7 +55,7 @@ object CustomerOrder {
 		get[Option[Long]]( "CustomerOrders.CustomerID" ) ~
 		get[Date]( "CustomerOrders.DateTime" ) ~
 		get[Long]( "CustomerOrderItems.ItemID" ) ~
-		get[Int]( "CustomerOrderItems.QuantityOrdered" ) ~
+		get[Long]( "CustomerOrderItems.QuantityOrdered" ) ~
 		get[java.math.BigDecimal]( "CustomerOrderItems.UnitPrice" ) map {
 			case id~customerId~dateTime~itemId~quantity~unitPrice => ( ( id, customerId, dateTime ), CustomerOrderItem( id, itemId, quantity, unitPrice ) )
 		}

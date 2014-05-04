@@ -30,7 +30,7 @@ object CustomerSalesController extends Controller with Secured {
 				mapping(
 					"customerOrderId" -> ignored(NotAssigned:Pk[Long]),
 					"itemId" -> longNumber,
-					"quantity" -> number,
+					"quantity" -> longNumber,
 					"unitPrice" -> bigDecimal
 				)(CustomerOrderItem.apply)(CustomerOrderItem.unapply)
 			)
