@@ -21,8 +21,14 @@ GET		/customers/:id				controllers.CustomerManagementController.edit(id: Long)
 POST	/customers/:id				controllers.CustomerManagementController.update(id: Long)
 POST	/customers/:id/delete		controllers.CustomerManagementController.delete(id: Long)
 
-GET		/vendors					controllers.VendorManagementController.list
 GET		/vendors/purchases			controllers.VendorPurchasesController.list
+
+GET		/vendors					controllers.VendorManagementController.list
+GET		/vendors/new				controllers.VendorManagementController.create
+POST	/vendors					controllers.VendorManagementController.add
+GET		/vendors/:id					controllers.VendorManagementController.edit(id: Long)
+POST	/vendors/:id					controllers.VendorManagementController.update(id: Long)
+POST	/vendors/:id/delete			controllers.VendorManagementController.delete(id: Long)
 
 GET		/items						controllers.ItemController.list
 GET		/items/new					controllers.ItemController.create
