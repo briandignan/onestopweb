@@ -87,8 +87,47 @@ object Vendor {
 		}
 	}
 	
-	def create( vendor: Vendor ): Int = {
-		0
+	def create( vendor: Vendor ): Unit = {
+		DB.withConnection { implicit connection =>
+			val vendorId = SQL(
+				"""
+					INSERT INTO Vendors
+					(Name, City, State, Country, EmailAddress, PhoneOne, PhoneTwo, Fax)
+					VALUES
+					({name}, {city}, {state}, {country}, {email}, {phoneOne}, {phoneTwo}, {fax})
+				"""
+			).on(
+				'name -> vendor.name,
+				'city -> vendor.city,
+				'state -> vendor.state,
+				'country -> vendor.country,
+				'email -> vendor.email,
+				'phoneOne -> vendor.phoneOne,
+				'phoneTwo -> vendor.phoneTwo,
+				'fax -> vendor.fax
+			).executeInsert( scalar[Long] single )
+			
+			println( "Vendor inserted with ID %d".format( vendorId ) )
+			
+			
+			val rowsInserted = vendor.items.map { item => 
+				SQL( 
+					"""
+						INSERT INTO VendorItems
+						(VendorID, ItemID, UnitCost)
+						VALUES
+						({vendorId}, {itemId}, {unitCost})
+					"""
+				).on( 
+					'vendorId -> vendorId,
+					'itemId -> item.itemId,
+					'unitCost -> item.unitCost.toString
+				).executeUpdate
+			}
+			
+			println( "Inserted %d VendorItems rows for new Vendor.".format( rowsInserted.size ) )
+			
+		}
 	}
 	
 	def update( id: Long, vendor: Vendor ): Unit = {
@@ -120,11 +159,78 @@ object Vendor {
 				"""
 			).on( 
 				'vendorId -> id
-			).as( VendorItem.simpleParser *).toSet
+			).as( VendorItem.simpleParser *)
 			
-			val formItems = vendor.items.toSet
+			val formItems = vendor.items
+			
+			val existingItemSet = existingItems.toSet
+			
+			val existingItemIds = existingItems.map { item => 
+				item.itemId
+			}.toSet
+			
+			val formItemIds = formItems.map { item =>
+				item.itemId
+			}.toSet
 			
 			
+			
+			formItems.foreach { item =>
+				// Add VendorItem records where an ItemID exists in the submitted form but not in the database
+				if ( !existingItemIds.contains(item.itemId) ) {
+					println( "Deleting Item. ItemID: %d VendorID: %d UnitCost: %s".format( item.itemId, id, item.unitCost ) )
+					SQL(
+						"""
+							INSERT INTO VendorItems
+							(VendorID, ItemID, UnitCost) VALUES
+							({vendorId}, {itemId}, {unitCost})
+						"""
+					).on( 
+						'vendorId -> id,
+						'itemId -> item.itemId,
+						'unitCost -> item.unitCost.toString
+					).executeUpdate
+				}
+				
+				// Update VendorItem records where the item previously existed for this vendor, but the UnitCost has been updated
+				if ( existingItemIds.contains(item.itemId) && !existingItemSet.contains(item) ) {
+					println( "Updating Item. ItemID: %d VendorID: %d UnitCost: %s".format( item.itemId, id, item.unitCost ) )
+					SQL(
+						"""
+							UPDATE VendorItems
+							SET UnitCost={unitCost}
+							WHERE VendorID={vendorId}
+							AND ItemID={itemId}
+						"""
+					).on(
+						'unitCost -> item.unitCost.toString,
+						'itemId -> item.itemId,
+						'vendorId -> id
+					).executeUpdate
+				}
+				
+				
+			}
+			
+			
+			// Remove VendorItem records where an ItemID exists in the database but not the submitted form
+			existingItems.foreach { item =>
+				if ( !formItemIds.contains(item.itemId) ) {
+					println( "Inserting Item. ItemID: %d VendorID: %d UnitCost: %s".format( item.itemId, id, item.unitCost ) )
+					SQL(
+						"""
+							DELETE FROM VendorItems
+							WHERE VendorID={vendorId}
+							AND ItemID={itemId}
+						"""	
+					).on(
+						'vendorId -> id,
+						'itemId -> item.itemId
+					).executeUpdate
+				}
+			}
+			
+			/*
 			// Add VendorItem records where an ItemID exists in the submitted form but not in the database
 			formItems.diff( existingItems ).foreach { item =>
 				SQL(
@@ -153,13 +259,32 @@ object Vendor {
 					'itemId -> item.itemId
 				).executeUpdate
 			}
-			
+			*/
 			
 		}
 	}
 	
 	def delete( id: Long ): Int = {
-		0
+		DB.withConnection { implicit connection =>
+			SQL(
+				"""
+					DELETE FROM VendorItems
+					WHERE VendorID={vendorId}
+				"""
+			).on(
+				'vendorId -> id
+			).executeUpdate
+			
+			SQL(
+				"""
+					DELETE FROM Vendors
+					WHERE VendorID={vendorId}
+				"""
+			).on(
+				'vendorId -> id
+			).executeUpdate
+			
+		}
 	}
 	
 }

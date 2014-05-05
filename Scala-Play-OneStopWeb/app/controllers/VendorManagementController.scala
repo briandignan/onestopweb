@@ -75,7 +75,7 @@ object VendorManagementController extends Controller with Secured {
 	def create() = IsAuthenticated { username => 
 		implicit request => {
 			User.findByEmail(username).map { user =>
-				Ok
+				Ok( html.vendorManagementCreate( user, vendorForm, Item.options ) )
 			}.getOrElse( Forbidden )
 		}
 	}
@@ -83,7 +83,13 @@ object VendorManagementController extends Controller with Secured {
 	def add() = IsAuthenticated { username =>
 		implicit request => {
 			User.findByEmail(username).map {user =>
-				Ok
+				vendorForm.bindFromRequest.fold(
+					formWithErrors => BadRequest( html.vendorManagementCreate( user, formWithErrors, Item.options ) ),
+					vendorToCreate => {
+						Vendor.create(vendorToCreate)
+						home.flashing( "success" -> "%s was created".format( vendorToCreate.name ) )
+					}
+				)
 			}.getOrElse( Forbidden )
 		}
 	}
@@ -91,7 +97,10 @@ object VendorManagementController extends Controller with Secured {
 	def delete( id: Long ) = IsAuthenticated { username =>
 		implicit request => {
 			User.findByEmail(username).map { user =>
-				Ok
+				Vendor.findById(id).map { vendor =>
+					Vendor.delete(id)
+					home.flashing( "success" -> "%s was deleted".format( vendor.name ) )
+				}.getOrElse( NotFound )
 			}.getOrElse( Forbidden )
 		}
 	}
