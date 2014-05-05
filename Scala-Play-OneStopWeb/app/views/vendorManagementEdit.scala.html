@@ -1,0 +1,123 @@
+@(user: User, id: Long, vendorForm: Form[Vendor], items: Seq[(String, String)])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.f) }
+
+@itemField(field: Field, className: String = "item") = {
+	<div class="@className">
+	<table>
+		<tr>
+		<td>
+			@select(
+	              field("itemId"), 
+	              items, 
+	              '_label -> "Item", '_default -> "-- Choose an item --",
+	              '_showConstraints -> false
+		    )
+		</td>
+		<td class="removeCol">
+	   	<a class="removeItem btn btn-danger pull-right">Remove</a>
+	   	</td>
+	   	<span class="help-inline"></span> 
+	   	</tr>
+	   	<tr>
+	   		<td>@inputText(field("unitCost"), '_label -> "Unit Cost")</td>
+	   		<td></td>
+	   	</tr>
+	</table>
+   	</div>
+}
+
+@main( user, "Vendors" ) {
+	
+	
+	<div class="centered-form">
+	
+		
+		@vendorForm.globalError.map { error => 
+			<div class="alert alert-danger"><strong>Error!</strong> @error.message</div>
+		}
+		
+		@helper.form(action=routes.VendorManagementController.update(id)) {
+			
+			<fieldset>
+			
+				@inputText(vendorForm("name"), '_label -> "Name")
+				@inputText(vendorForm("city"), '_label -> "City")
+				@inputText(vendorForm("state"), '_label -> "State")
+				@inputText(vendorForm("country"), '_label -> "Country")
+				@inputText(vendorForm("emailAddress"), '_label -> "Email Address")
+				@inputText(vendorForm("phoneOne"), '_label -> "Phone Number One")
+				@inputText(vendorForm("phoneTwo"), '_label -> "Phone Number Two")
+				@inputText(vendorForm("fax"), '_label -> "Fax Number")
+				
+				<div class="items">
+		
+		            @repeat(vendorForm("items"), min = 0) { item =>
+		                
+		                @itemField(item)
+		    
+		            }
+		            
+		            @**
+		             * Keep an hidden block that will be used as template for Javascript copy code
+		             **@
+		            @itemField(
+		                vendorForm("items[x]"),
+		                className = "item_template"
+		            )
+		            
+		            <div class="clearfix">
+		                <div class="input">
+		                    <a class="addItem btn btn-success">Add an item</a>
+		                </div>
+		            </div>
+		        
+		        </div>
+			
+			</fieldset>
+			
+			<div class="actions">
+	            <input type="submit" value="Update" class="btn btn-primary"> or 
+	            <a href="@routes.VendorManagementController.list()" class="btn btn-default">Cancel</a> 
+	        </div>
+			
+		}
+		
+		@form(routes.VendorManagementController.delete(id), 'class -> "topRight") {
+	        <input type="submit" value="Delete" class="btn btn-danger">
+	    }
+    
+    </div>
+	
+    <script type="text/javascript" charset="utf-8">
+        
+        $('.removeItem').live('click', function(e) {
+            $(this).parents('.item').remove()
+            renumber()
+        })
+         
+        $('.addItem').live('click', function(e) {
+            var template = $('.item_template')
+            template.before('<div class="item">' + template.html() + '</div>')
+            renumber()
+        })
+        
+        var renumber = function(phones) {
+            $('.item').each(function(i) {
+                $('select', this).each(function() {
+                    $(this).attr('name', $(this).attr('name').replace(/items\[.+?\]/g, 'items[' + i + ']'))
+                })
+                $('input', this).each(function() {
+                    $(this).attr('name', $(this).attr('name').replace(/items\[.+?\]/g, 'items[' + i + ']'))
+                })
+            })
+        }
+        
+    </script>
+    
+	
+	
+	
+}

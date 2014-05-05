@@ -77,7 +77,6 @@ object CustomerOrder {
 				}
 			}.toSeq
 		}
-		println( "Retrieved " + orders.size + " orders" )
 		orders
 	}
 	

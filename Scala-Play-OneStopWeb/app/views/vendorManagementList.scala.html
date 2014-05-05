@@ -1,5 +1,42 @@
-@(user: User)
+@(user: User, vendors: Seq[Vendor])(implicit flash: play.api.mvc.Flash)
 
 @main(user, "Vendors") {
-	<p>Vendor Management</p>	
+	
+	@table( "vendor", routes.VendorManagementController.create() ) {
+		
+		<table id="main-table">
+			<thead>
+				<tr>
+					<td>Name</td>
+					<td>City</td>
+					<td>State</td>
+					<td>Country</td>
+					<td>EmailAddress</td>
+					<td>PhoneOne</td>
+					<td>PhoneTwo</td>
+					<td>Fax</td>
+				</tr>
+			</thead>
+			<tbody>
+				
+				@vendors.map { 
+					case Vendor(id, name, city, state, country, emailAddress, phoneOne, phoneTwo, fax, items) => {
+						<tr>
+							<td><a href="@routes.VendorManagementController.edit(id.get)">@name</a></td>
+							<td>@city</td>
+							<td>@state</td>
+							<td>@country</td>
+							<td>@emailAddress</td>
+							<td>@phoneOne</td>
+							<td>@phoneTwo</td>
+							<td>@fax</td>
+						</tr>	
+					}
+				}
+			
+			</tbody>
+		</table>
+		
+		
+	}
 }
