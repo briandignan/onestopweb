@@ -1,0 +1,56 @@
+@(user: User, ordersByVendor: List[OrdersByVendor])(implicit flash: play.api.mvc.Flash)
+
+@main(user, "Vendors") {
+	
+	@flash.get("success").map { message =>
+        <div class="alert alert-success">
+            <strong>Done!</strong> @message
+        </div>
+    }
+    
+    @flash.get("error").map { message =>
+        <div class="alert alert-danger">
+            <strong>Error!</strong> @message
+        </div>
+    }
+
+    
+    	<table id="main-table">
+			<thead>
+				<tr>
+					<td>Name</td>
+					<td>Items Offered</td>
+					<td>Low Quantity Items</td>
+					<td>Orders Received</td>
+					<td>Orders Processing</td>
+				</tr>
+			</thead>
+			<tbody>
+				
+				@ordersByVendor.map { 
+					case OrdersByVendor( id, name, itemsOffered, lowQuantity, ordersReceived, ordersProcessing ) => {
+						<tr>
+							<td><a href="@routes.VendorOrdersController.vendor(id.get)">@name</a></td>
+							<td>@itemsOffered</td>
+							<td>@lowQuantity</td>
+							<td>@ordersReceived</td>
+							<td>@ordersProcessing</td>
+						</tr>	
+					}
+				}
+			
+			</tbody>
+		</table>
+    
+    
+    <script>
+		$(function(){
+		   	$("#main-table").dataTable({
+		   		"bStateSave": true
+			}) 
+		})
+	</script>
+        
+	
+	
+}

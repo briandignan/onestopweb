@@ -21,13 +21,22 @@ GET		/customers/:id				controllers.CustomerManagementController.edit(id: Long)
 POST	/customers/:id				controllers.CustomerManagementController.update(id: Long)
 POST	/customers/:id/delete		controllers.CustomerManagementController.delete(id: Long)
 
-GET		/vendors/purchases			controllers.VendorPurchasesController.list
+
+GET 	/vendors/orders/list				controllers.VendorOrdersController.list
+GET		/vendors/orders/:vendorId			controllers.VendorOrdersController.vendor(vendorId: Long)
+GET		/vendors/orders/:vendorId/new		controllers.VendorOrdersController.createOrder(vendorId: Long)
+POST	/vendors/orders/:vendorId			controllers.VendorOrdersController.executeOrder(vendorId: Long)
+GET		/vendors/orders/:vendorId/:orderId	controllers.VendorOrdersController.editOrder(vendorId: Long, orderId: Long)
+POST	/vendors/orders/:vendorId/:orderId	controllers.VendorOrdersController.updateOrder(vendorId: Long, orderId: Long)
+
+
+
 
 GET		/vendors					controllers.VendorManagementController.list
 GET		/vendors/new				controllers.VendorManagementController.create
 POST	/vendors					controllers.VendorManagementController.add
-GET		/vendors/:id					controllers.VendorManagementController.edit(id: Long)
-POST	/vendors/:id					controllers.VendorManagementController.update(id: Long)
+GET		/vendors/:id				controllers.VendorManagementController.edit(id: Long)
+POST	/vendors/:id				controllers.VendorManagementController.update(id: Long)
 POST	/vendors/:id/delete			controllers.VendorManagementController.delete(id: Long)
 
 GET		/items						controllers.ItemController.list

@@ -259,6 +259,7 @@ INSERT INTO VendorOrders (VendorOrderID, VendorID, DateOrdered, DateDelivered) V
 INSERT INTO VendorOrders (VendorOrderID, VendorID, DateOrdered, DateDelivered) VALUES (6, (SELECT VendorID from Vendors WHERE Name='Berliner'), '2014-04-02 10:35:00', '2014-04-04 09:25:00');
 INSERT INTO VendorOrders (VendorOrderID, VendorID, DateOrdered, DateDelivered) VALUES (7, (SELECT VendorID from Vendors WHERE Name='Walmart'), '2014-04-03 10:35:00', '2014-04-06 15:25:00');
 INSERT INTO VendorOrders (VendorOrderID, VendorID, DateOrdered, DateDelivered) VALUES (8, (SELECT VendorID from Vendors WHERE Name='Wholesale Rolling Papers'), '2014-04-05 14:40:00', '2014-04-06 18:25:00');
+INSERT INTO VendorOrders (VendorOrderID, VendorID, DateOrdered, DateDelivered) VALUES (9, (SELECT VendorID from Vendors WHERE Name='Wholesale Rolling Papers'), '2014-04-07 11:22:00', null);
 
 
 
@@ -291,6 +292,7 @@ INSERT INTO VendorOrderItems (VendorOrderID, ItemID, QuantityOrdered, UnitCost) 
 INSERT INTO VendorOrderItems (VendorOrderID, ItemID, QuantityOrdered, UnitCost) VALUES (7, (SELECT ItemID FROM Inventory WHERE SKU='644209412006'), 150, '1.745');
 INSERT INTO VendorOrderItems (VendorOrderID, ItemID, QuantityOrdered, UnitCost) VALUES (8, (SELECT ItemID FROM Inventory WHERE SKU='716165177814'), 50, '1.995');
 INSERT INTO VendorOrderItems (VendorOrderID, ItemID, QuantityOrdered, UnitCost) VALUES (8, (SELECT ItemID FROM Inventory WHERE SKU='716165179481'), 25, '1.145');
+INSERT INTO VendorOrderItems (VendorOrderID, ItemID, QuantityOrdered, UnitCost) VALUES (9, (SELECT ItemID FROM Inventory WHERE SKU='716165179481'), 100, '1.145');
 
 
 
