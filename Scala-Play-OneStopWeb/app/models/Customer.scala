@@ -263,4 +263,39 @@ object Customer {
 	}
 	
 	
+	def receiveEmailPromotion( productTypeId: Long ): Seq[String] = {
+		DB.withConnection { implicit connection =>
+			SQL(
+				"""
+					SELECT EmailAddress FROM Customers
+					JOIN CustomerFavorites ON Customers.CustomerID=CustomerFavorites.CustomerID
+					JOIN PromotionDevices ON Customers.PromotionDeviceID=PromotionDevices.PromotionDeviceID
+					WHERE CustomerFavorites.ProductTypeID={productTypeId}
+					AND EmailAddress is not null
+					AND ( PromotionDevices.Name = 'Email' OR PromotionDevices.Name = 'Phone and Email' )
+				"""
+			).on( 
+				'productTypeId -> productTypeId
+			).as( scalar[String] * )
+		}
+	}
+	
+	def receiveSmsPromotion( productTypeId: Long ): Seq[String] = {
+		DB.withConnection { implicit connection =>
+			SQL(
+				"""
+					SELECT PhoneNumber FROM Customers
+					JOIN CustomerFavorites ON Customers.CustomerID=CustomerFavorites.CustomerID
+					JOIN PromotionDevices ON Customers.PromotionDeviceID=PromotionDevices.PromotionDeviceID
+					WHERE CustomerFavorites.ProductTypeID={productTypeId}
+					AND PhoneNumber is not null
+					AND ( PromotionDevices.Name = 'Phone' OR PromotionDevices.Name = 'Phone and Email' )
+				"""
+			).on( 
+				'productTypeId -> productTypeId
+			).as( scalar[String] * )
+		}
+	}
+	
+	
 }

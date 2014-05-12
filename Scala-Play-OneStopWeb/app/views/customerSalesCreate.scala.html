@@ -1,4 +1,4 @@
-@(loggedInUser: User, customerOrderForm: Form[CustomerOrder], customers: Seq[(String, String)], items: Seq[(String, String)])
+@(loggedInUser: User, customerOrderForm: Form[CustomerOrder], customers: Seq[(String, String)], items: Seq[(String, String)], itemPrices: Seq[(String, String)])
 
 @import helper._
 
@@ -74,7 +74,17 @@
 	</div>
 	
     <script type="text/javascript" charset="utf-8">
-        
+
+		var itemToPrice = {
+			@itemPrices.map{ case (itemId, price) =>
+				"@itemId": "@price", 
+			}
+		}
+    
+        $('fieldset').on('change', '#items_x__itemId',function() {
+        	$(this).parent().parent().parent().find("#items_x__unitPrice").val( itemToPrice[$(this).val()] );
+        })
+    
         $('.removeItem').live('click', function(e) {
             $(this).parents('.item').remove()
             renumber()

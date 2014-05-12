@@ -1,0 +1,109 @@
+@(user: User, promotionForm: Form[Promotion], productTypes: Seq[(String, String)])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.f) }
+
+
+@main( user, "Customers" ) {
+	
+	
+	<div class="centered-form">
+	
+		@helper.form(action=routes.CustomerPromotionsController.execute() ) {
+			
+			<fieldset>
+			
+				@select(
+			          promotionForm("productType"), 
+			          productTypes, 
+			          '_label -> "Department", '_default -> "-- Choose a department --",
+			          '_showConstraints -> false
+			    )
+			    
+			    @textarea( promotionForm( "messageBody" ), '_label -> "Message Body" )
+			    
+			    
+			    
+			    
+		  		<div class="clearfix">
+			        <div class="input">
+			        	<a class="btn btn-success" id="enableEmail">Enable Email</a>
+			        </div>
+		        </div>
+		        
+		        <div class="well" id="emailSection" style="display: none;">
+		        	
+		        	<a class="btn btn-danger pull-right" id="disableEmail">Disable Email</a>
+		        	@inputText( promotionForm( "gmail.credentials.userName" ), '_label -> "Gmail Account" )
+		        	@inputPassword( promotionForm( "gmail.credentials.password" ), '_label -> "Gmail Password" )
+		        	@inputText( promotionForm( "gmail.subject" ), '_label -> "Email Subject" )
+		        
+				</div>
+				
+				
+				<div class="clearfix">
+			        <div class="input">
+			        	<a class="btn btn-success" id="enableSms">Enable SMS</a>
+			        </div>
+		        </div>
+		        
+		        <div class="well" id="smsSection" style="display: none;">
+		        	
+		        	<a class="btn btn-danger pull-right" id="disableSms">Disable SMS</a>
+		        	@inputText( promotionForm( "gvoice.userName" ), '_label -> "Google Voice Account" )
+		        	@inputPassword( promotionForm( "gvoice.password" ), '_label -> "Google Voice Password" )
+		        
+				</div>
+				
+			
+			
+			</fieldset>
+			
+			<div class="actions">
+	            <input type="submit" value="Send" class="btn btn-primary"> or 
+	            <a href="@routes.CustomerManagementController.list()" class="btn btn-default">Cancel</a> 
+	        </div>
+			
+		}
+	
+	</div>
+	
+	
+	<script>
+	
+	    $('fieldset').on('click', '#disableEmail', function() {
+	    	$('#emailSection').hide();
+	    	$('#gmail_credentials_userName').val("");
+	    	$('#gmail_credentials_password').val("");
+	    	$('#gmail_subject').val("");
+	    	$('#enableEmail').show();
+	    })
+	    
+	    
+	    $('fieldset').on('click', '#enableEmail', function() {
+	    	$('#emailSection').show();
+	    	$(this).hide();
+	    })
+	    
+	    
+	    
+	    $('fieldset').on('click', '#disableSms', function() {
+	    	$('#smsSection').hide();
+	    	$('#gvoice_userName').val("");
+	    	$('#gvoice_password').val("");
+	    	$('#enableSms').show();
+	    })
+	    
+	    
+	    $('fieldset').on('click', '#enableSms', function() {
+	    	$('#smsSection').show();
+	    	$(this).hide();
+	    })
+
+
+	</script>
+	    
+	    
+	
+}

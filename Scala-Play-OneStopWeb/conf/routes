@@ -12,7 +12,8 @@ POST	/customers/sales			controllers.CustomerSalesController.add
 GET		/customers/sales/:id		controllers.CustomerSalesController.view(id: Long)
 POST	/customers/sales/:id/delete controllers.CustomerSalesController.delete(id: Long)
 
-GET		/customers/promotions		controllers.CustomerPromotionsController.list
+GET		/customers/promotions		controllers.CustomerPromotionsController.create
+POST	/customers/promotions		controllers.CustomerPromotionsController.execute
 
 GET		/customers					controllers.CustomerManagementController.list
 GET		/customers/new				controllers.CustomerManagementController.create

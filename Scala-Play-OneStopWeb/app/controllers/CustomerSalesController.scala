@@ -51,7 +51,7 @@ object CustomerSalesController extends Controller with Secured {
 		implicit request => {
 			User.findByEmail(username).map { user =>
 				val sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-				Ok( html.customerSalesCreate( user, createCustomer.bind(Map("dateTime"->sdf.format(new Date))), Customer.options, Item.options ) )
+				Ok( html.customerSalesCreate( user, createCustomer.bind(Map("dateTime"->sdf.format(new Date))), Customer.options, Item.options, Item.prices ) )
 			}.getOrElse( Forbidden )
 		}
 	}
@@ -60,7 +60,7 @@ object CustomerSalesController extends Controller with Secured {
 		implicit request => {
 			User.findByEmail(username).map { user =>
 				createCustomer.bindFromRequest.fold(
-					formWithErrors => BadRequest( html.customerSalesCreate( user, formWithErrors, Customer.options, Item.options ) ),
+					formWithErrors => BadRequest( html.customerSalesCreate( user, formWithErrors, Customer.options, Item.options, Item.prices ) ),
 					customerOrder => {
 						CustomerOrder.create( customerOrder )
 						customerOrder.items.foreach { item =>
