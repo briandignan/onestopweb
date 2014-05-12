@@ -50,14 +50,15 @@
                 <li><a href="@routes.VendorOrdersController.list()">Orders</a></li>
               </ul>
             </li> 
+            <li class="@("active".when(page == "Settings"))"><a href="@routes.AdminUsers.list()">Admin Users</a></li>
+            
             <!-- <li class="@("active".when(page == "Reports"))"><a href="@routes.OneStop.reports()">Reports</a></li>  -->
-            <li class="dropdown @("active".when(page == "Settings"))">
+            <!-- <li class="dropdown @("active".when(page == "Settings"))">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Settings <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="@routes.AdminUsers.list()">Admin Users</a></li>
-                <li><a href="@routes.OneStop.settingsOther()">Other Settings</a></li>
               </ul>
-            </li> 
+            </li>  -->
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><span class="navbar-text">@user.firstName @user.lastName - @user.email</span></li>
