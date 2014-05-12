@@ -1,5 +1,23 @@
 # --- First database schema
 
+
+
+# --- !Downs
+
+drop table if exists AdminUsers;
+drop table if exists ProductType;
+drop table if exists Inventory;
+drop table if exists Vendors;
+drop table if exists VendorItems;
+drop table if exists Customers;
+drop table if exists PromotionDevices;
+drop table if exists CustomerOrderItems;
+drop table if exists CustomerFavorites;
+drop table if exists VendorOrders;
+drop table if exists VendorOrderItems;
+
+
+
 # --- !Ups
 
 CREATE TABLE AdminUsers (
@@ -295,18 +313,4 @@ INSERT INTO VendorOrderItems (VendorOrderID, ItemID, QuantityOrdered, UnitCost) 
 INSERT INTO VendorOrderItems (VendorOrderID, ItemID, QuantityOrdered, UnitCost) VALUES (9, (SELECT ItemID FROM Inventory WHERE SKU='716165179481'), 100, '1.145');
 
 
-
-# --- !Downs
-
-drop table if exists AdminUsers;
-drop table if exists ProductType;
-drop table if exists Inventory;
-drop table if exists Vendors;
-drop table if exists VendorItems;
-drop table if exists Customers;
-drop table if exists PromotionDevices;
-drop table if exists CustomerOrderItems;
-drop table if exists CustomerFavorites;
-drop table if exists VendorOrders;
-drop table if exists VendorOrderItems;
 
