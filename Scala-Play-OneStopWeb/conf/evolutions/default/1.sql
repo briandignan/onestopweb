@@ -162,11 +162,11 @@ CREATE UNIQUE INDEX  Customers_PhoneNumber_Index ON Customers (PhoneNumber);
 CREATE UNIQUE INDEX  Customers_EmailAddress_Index ON Customers (EmailAddress);
 
 
-INSERT INTO Customers (CustomerID, FirstName, LastName, PhoneNumber, EmailAddress, PromotionDeviceID) VALUES (1, 'George', 'Washington', null, null, 1);
-INSERT INTO Customers (CustomerID, FirstName, LastName, PhoneNumber, EmailAddress, PromotionDeviceID) VALUES (2, 'Thomas', 'Jefferson', '3013213213', 'thomas.jefferson@presidents.com', 4);
-INSERT INTO Customers (CustomerID, FirstName, LastName, PhoneNumber, EmailAddress, PromotionDeviceID) VALUES (3, 'John', 'Adams', null, 'john.adams@presidents.com', 1);
-INSERT INTO Customers (CustomerID, FirstName, LastName, PhoneNumber, EmailAddress, PromotionDeviceID) VALUES (4, 'Abraham', 'Lincoln', '4101234567', 'abe.lincoln@presidents.com', 2);
-INSERT INTO Customers (CustomerID, FirstName, LastName, PhoneNumber, EmailAddress, PromotionDeviceID) VALUES (5, 'Teddy', 'Roosevelt', null, 'teddy.roosevelt@presidents.com', 3);
+INSERT INTO Customers (CustomerID, FirstName, LastName, PhoneNumber, EmailAddress, PromotionDeviceID) VALUES (1, 'George', 'Washington', '4102518997', 'briandignan@gmail.com', 1);
+INSERT INTO Customers (CustomerID, FirstName, LastName, PhoneNumber, EmailAddress, PromotionDeviceID) VALUES (2, 'Thomas', 'Jefferson', '3015299405', 'ramaswamy.adithya@gmail.com', 3);
+INSERT INTO Customers (CustomerID, FirstName, LastName, PhoneNumber, EmailAddress, PromotionDeviceID) VALUES (3, 'John', 'Adams', '6789089630', 'dosetareh@gmail.com', 1);
+INSERT INTO Customers (CustomerID, FirstName, LastName, PhoneNumber, EmailAddress, PromotionDeviceID) VALUES (4, 'Abraham', 'Lincoln', '8458031438', 'brianwei@terpmail.umd.edu', 2);
+INSERT INTO Customers (CustomerID, FirstName, LastName, PhoneNumber, EmailAddress, PromotionDeviceID) VALUES (5, 'Teddy', 'Roosevelt', null, 'teddy.roosevelt@presidents.com', 4);
 
 
 CREATE TABLE CustomerOrders(
