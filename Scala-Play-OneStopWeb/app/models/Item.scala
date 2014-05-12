@@ -116,6 +116,54 @@ object Item {
 		println( "Updated " + rowsUpdated + " rows" )
 		rowsUpdated
 	}
+	
+	def increaseCount( id: Long, quantity: Long ) = {
+		DB.withConnection { implicit connection =>
+			val currentCount = SQL(
+				"""
+					SELECT QuantityOnHand FROM Inventory
+					WHERE ItemID = {itemId}
+				"""
+			).on(
+				'itemId -> id
+			).as( scalar[Long] single )
+			
+			SQL(
+				"""
+					UPDATE Inventory
+					SET QuantityOnHand={newQuantity}
+					WHERE ItemID = {itemId}
+				"""
+			).on( 
+				'itemId -> id,
+				'newQuantity -> (currentCount + quantity)
+			).executeUpdate
+		}
+	}
+	
+	def decreaseCount( id: Long, quantity: Long ) = {
+		DB.withConnection { implicit connection =>
+			val currentCount = SQL(
+				"""
+					SELECT QuantityOnHand FROM Inventory
+					WHERE ItemID = {itemId}
+				"""
+			).on(
+				'itemId -> id
+			).as( scalar[Long] single )
+			
+			SQL(
+				"""
+					UPDATE Inventory
+					SET QuantityOnHand={newQuantity}
+					WHERE ItemID = {itemId}
+				"""
+			).on( 
+				'itemId -> id,
+				'newQuantity -> (currentCount - quantity)
+			).executeUpdate
+		}
+	}
 		
 	def delete( id: Long ): Int = {
 		DB.withConnection { implicit connection =>
@@ -145,6 +193,23 @@ object Item {
 					SELECT ItemID, SKU, Description FROM Inventory ORDER BY SKU
 				"""
 			).as( nameMapper * )
+		}
+	}
+	
+	val priceMapper = {
+		get[Pk[Long]]( "Inventory.ItemID" ) ~
+		get[java.math.BigDecimal]( "Inventory.UnitPrice" ) map {
+			case id~unitPrice => ( id.toString, unitPrice.toString )
+		}
+	}
+	
+	def prices(): Seq[(String, String)] = {
+		DB.withConnection{ implicit connection =>
+			SQL(
+				"""
+					SELECT ItemID, UnitPrice FROM Inventory
+				"""
+			).as( priceMapper * )
 		}
 	}
 	

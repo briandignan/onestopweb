@@ -1,6 +1,9 @@
-@(user: User, vendorOrders: List[VendorOrder])(implicit flash: play.api.mvc.Flash)
+@(user: User, vendor: Vendor, vendorOrders: List[VendorOrderSummary])(implicit flash: play.api.mvc.Flash)
 
 @main(user, "Vendors") {
+	
+	<h2>@vendor.name</h2>
+	<br>
 	
 	@flash.get("success").map { message =>
         <div class="alert alert-success">
@@ -27,7 +30,7 @@
 			<tbody>
 				
 				@vendorOrders.map { 
-					case VendorOrder( orderId, vendorId, name, dateOrdered, dateReceived, itemsOrdered, totalCost ) => {
+					case VendorOrderSummary( orderId, vendorId, name, dateOrdered, dateReceived, itemsOrdered, totalCost ) => {
 						<tr>
 							<td><a href="@routes.VendorOrdersController.editOrder(vendorId, orderId.get)">@dateOrdered</a></td>
 							<td>@dateReceived</td>
@@ -40,6 +43,7 @@
 			</tbody>
 		</table>
     
+    	<a class="btn btn-success" id="add" href="@routes.VendorOrdersController.createOrder( vendor.id.get )">Generate Product Order</a>
     
     <script>
 		$(function(){

@@ -287,4 +287,28 @@ object Vendor {
 		}
 	}
 	
+	val itemsOfferedParser = {
+		get[Long]( "VendorItems.ItemID" ) ~
+		get[String]( "Inventory.Description" ) ~
+		get[java.math.BigDecimal]( "VendorItems.UnitCost" ) map {
+			case itemId~description~unitCost => ( itemId.toString, description, BigDecimal(unitCost) )
+		}
+	}
+	
+	def itemsOffered( vendorId: Long ): Seq[(String, String, BigDecimal)] = {
+		DB.withConnection { implicit connection => 
+			SQL(
+			"""
+				SELECT VendorItems.ItemID, Inventory.Description, VendorItems.UnitCost
+				FROM VendorItems
+				JOIN Inventory ON VendorItems.ItemID=Inventory.ItemID
+				WHERE VendorItems.VendorID={vendorId}
+			"""
+			).on( 
+				'vendorId -> vendorId
+			).as( itemsOfferedParser * )
+		}
+	}
+	
+	
 }

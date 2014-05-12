@@ -1,0 +1,219 @@
+@(user: User, vendor: Vendor, vendorOrderForm: Form[VendorOrder], itemsOffered: Seq[(String, String)], itemPrices: Seq[(String, String)])
+
+@import helper._
+
+
+@itemField(field: Field, className: String = "item") = {
+	<div class=@className>
+		<a class="removeItem btn btn-danger pull-right">Remove</a>
+		
+		@select(
+	              field("itemId"), 
+	              itemsOffered, 
+	              '_label -> "Item", '_default -> "-- Choose an item --",
+	              '_showConstraints -> false
+	    )
+	    
+	    @inputText( field("unitCost"), '_label -> "Unit Cost" )
+	    
+	    @inputText( field("quantity"), '_label -> "Quantity" )
+		
+	   	
+	   	<span class="help-inline"></span> 
+   	</div>
+}
+
+@main( user, "Vendors" ) {
+	<!-- <p>Generate Product Order for @vendor.name @vendor.email.getOrElse("<No Email>")</p>  -->
+	
+	
+	<div class="centered-form">
+	
+		@helper.form(action=routes.VendorOrdersController.executeOrder( vendor.id.get ) ) {
+			
+			<fieldset>
+			
+				@inputText( vendorOrderForm( "dateOrdered" ), '_label -> "Date Ordered" ) 
+				@inputText( vendorOrderForm( "dateReceived" ), '_label -> "Date Received" )
+				 
+				 
+				<div class="items">
+		
+		            @repeat(vendorOrderForm("items"), min = 0) { item =>
+		                
+		                @itemField(item)
+		    
+		            }
+		            
+		            @**
+		             * Keep an hidden block that will be used as template for Javascript copy code
+		             **@
+		            @itemField(
+		                vendorOrderForm("items[x]"),
+		                className = "item_template"
+		            )
+		            
+		            <div class="clearfix">
+		                <div class="input">
+		                    <a class="addItem btn btn-success">Add an item</a>
+		                </div>
+		            </div>
+		        
+		        </div>
+		        
+		        @vendor.email.map { email =>  
+		        
+			        <div class="clearfix">
+				        <div class="input">
+				        	<a class="btn btn-success" id="enableEmail">Enable Email</a>
+				        </div>
+			        </div>
+			        
+			        <div class="well" id="emailSection" style="display: none;">
+			        	
+			        	<a class="btn btn-danger pull-right" id="disableEmail">Disable Email</a>
+			        	@inputText( vendorOrderForm( "emailInfo.gmailAccount" ), '_label -> "Gmail Account" )
+			        	@inputPassword( vendorOrderForm( "emailInfo.gmailPassword" ), '_label -> "Gmail Password" )
+			        	@inputText( vendorOrderForm( "emailInfo.emailSubject" ), '_label -> "Email Subject" )
+			        	@textarea( vendorOrderForm( "emailInfo.emailBody" ), '_label -> "Email Body" )
+			        
+					</div>
+				
+				}
+				
+			</fieldset>
+			
+			<div class="actions">
+	            <input type="submit" value="Execute Order" class="btn btn-primary"> or 
+	            <a href="@routes.VendorOrdersController.vendor( vendor.id.get )" class="btn btn-default">Cancel</a> 
+	        </div>
+			
+		}
+	
+	</div>
+	
+	
+	
+	<script type="text/javascript" charset="utf-8">
+
+		var itemToPrice = {
+			@itemPrices.map{ case (itemId, price) =>
+				"@itemId": "@price", 
+			}
+		}
+    
+        $('.removeItem').live('click', function(e) {
+            $(this).parents('.item').remove()
+            renumber()
+        })
+         
+        $('.addItem').live('click', function(e) {
+            var template = $('.item_template')
+            template.before('<div class="twipsies well item">' + template.html() + '</div>')
+            renumber()
+        })
+        
+        $('fieldset').on('change', '#items_x__itemId',function() {
+        	$(this).parent().parent().parent().find("#items_x__unitCost").val( itemToPrice[$(this).val()] );
+        })
+        
+        $(function() {
+        	$('#dateOrdered').datepicker()
+        })
+        
+        $(function() {
+        	$('#dateReceived').datepicker()
+        })
+        
+        $('fieldset').on('click', '#disableEmail', function() {
+        	$('#emailSection').hide();
+        	$('#emailInfo_gmailAccount').val("");
+        	$('#emailInfo_gmailPassword').val("");
+        	$('#emailInfo_emailSubject').val("");
+        	$('#emailInfo_emailBody').val("");
+        	$('#enableEmail').show();
+        })
+        
+        
+        $('fieldset').on('click', '#enableEmail', function() {
+        	$('#emailInfo_emailSubject').val( generateSubject() );
+        	$('#emailInfo_emailBody').val( generateBody() );
+        	$('#emailSection').show();
+        	$(this).hide();
+        })
+        
+        
+        if ( $('#emailInfo_gmailAccount').val() != "" || $('#emailInfo_gmailPassword').val() != "" || $('#emailInfo_emailSubject').val() != "" || $('#emailInfo_emailBody').val() != "" ) {
+        	$('#emailSection').show();
+        	$('#enableEmail').hide();
+        }        
+        
+        function generateSubject() {
+        	return "Purchase Request"
+        }
+        
+        function generateBody() {
+        	
+        	var result = "Please process the following order:\n\n";
+        	
+        	var lineCount = 1;
+        	var total = 0;
+        	
+        	$('.item').each(function(index) {
+        		//console.log( index + ": " + $( this ).html() );
+        		var itemDropDown = $(this).find('#items_x__itemId').find('option:selected');
+        		//console.log(itemDropDown.text());
+        		//console.log(itemDropDown.val());
+        		//console.log( "dropDown value is empty: " + ( itemDropDown.val() == "" ) );
+        		var itemVal = itemDropDown.val();
+        		var itemText = itemDropDown.text();
+        		
+        		var unitCostElement = $(this).find('#items_x__unitCost');
+        		var unitCost = unitCostElement.val();
+        		//console.log( "Unit Cost: " + unitCostElement.val() );
+        		//console.log( "Unit Cost is Blank: " + ( unitCostElement.val() == "" ) );
+        		
+        		var quantityElement = $(this).find('#items_x__quantity');
+        		var quantity = quantityElement.val();
+        		
+        		if ( itemVal != "" && unitCost != "" && quantity != "" ) {
+        			//console.log( "All three aren't blank" );
+        			result = result + lineCount + ") Qty " + quantity + " \"" + itemText + "\" at $" + unitCost + " each\n";
+        			total = total + ( quantity * unitCost );
+        			lineCount = lineCount + 1;
+        		}
+        		
+        		
+        	})
+        	
+        	//result = result + "1) Qty <qty> \"<itemDesc>\" at <unitCost> each\n";
+        	result = result + "\n";
+        	result = result + "Order Total: $" + total + "\n\n";
+        	result = result + "Thanks,\n";
+        	result = result + "OneStopShop";
+        	
+        	return result;
+        	
+        }
+        
+        
+        /*
+        $(function() {
+        	$('#emailSection').hide();
+        })*/
+        
+        var renumber = function(phones) {
+            $('.item').each(function(i) {
+                $('select', this).each(function() {
+                    $(this).attr('name', $(this).attr('name').replace(/items\[.+?\]/g, 'items[' + i + ']'))
+                })
+                $('input', this).each(function() {
+                    $(this).attr('name', $(this).attr('name').replace(/items\[.+?\]/g, 'items[' + i + ']'))
+                })
+            })
+        }
+        
+    </script>
+	
+	
+}
