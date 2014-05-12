@@ -7,7 +7,7 @@ import anorm.SqlParser._
 import java.util.Date
 import java.text.SimpleDateFormat
 
-case class VendorOrderSummary( orderId: Pk[Long], vendorId: Long, vendorName: String, dateOrdered: String, dateReceived: Option[String], itemsOrdered: Long, totalCost: BigDecimal)
+case class VendorOrderSummary( orderId: Pk[Long], vendorId: Long, vendorName: String, dateOrdered: String, dateReceived: Option[String], itemsOrdered: String, totalCost: String)
 
 object VendorOrderSummary { 
 	
@@ -19,14 +19,14 @@ object VendorOrderSummary {
 		get[String]( "Vendors.Name" ) ~
 		get[Date]( "VendorOrders.DateOrdered" ) ~
 		get[Option[Date]]( "VendorOrders.DateDelivered" ) ~
-		get[Long]( "ItemsOrdered" ) ~
+		get[java.math.BigDecimal]( "ItemsOrdered" ) ~
 		get[java.math.BigDecimal]( "TotalCost" ) map {
 			case orderId~vendorId~name~dateOrdered~dateReceived~itemsOrdered~totalCost => {
 				val formatOrdered = dateFormat.format( dateOrdered )
 				val formatReceived = dateReceived.map { date => 
 					dateFormat.format( date )
 				}
-				VendorOrderSummary( orderId, vendorId, name, formatOrdered, formatReceived, itemsOrdered, totalCost )
+				VendorOrderSummary( orderId, vendorId, name, formatOrdered, formatReceived, itemsOrdered.toString, totalCost.toString )
 			}
 		}
 	}
