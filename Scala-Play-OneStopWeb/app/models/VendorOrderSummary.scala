@@ -19,7 +19,7 @@ object VendorOrderSummary {
 		get[String]( "Vendors.Name" ) ~
 		get[Date]( "VendorOrders.DateOrdered" ) ~
 		get[Option[Date]]( "VendorOrders.DateDelivered" ) ~
-		get[java.math.BigDecimal]( "ItemsOrdered" ) ~
+		get[java.math.BigDecimal]( "ItemsOrdered" ) ~ // Breaks H2 but fixes an issue with MySQL (Changed from Long to BigDecimal)
 		get[java.math.BigDecimal]( "TotalCost" ) map {
 			case orderId~vendorId~name~dateOrdered~dateReceived~itemsOrdered~totalCost => {
 				val formatOrdered = dateFormat.format( dateOrdered )
