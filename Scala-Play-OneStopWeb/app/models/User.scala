@@ -8,7 +8,6 @@ import play.api.Logger
 import anorm._
 import anorm.SqlParser._
 
-import scala.language.postfixOps
 
 import org.mindrot.jbcrypt.BCrypt
 
