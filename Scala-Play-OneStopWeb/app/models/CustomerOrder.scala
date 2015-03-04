@@ -39,7 +39,7 @@ object CustomerOrder {
 							({customerOrderId}, {itemId}, {quantity}, {unitPrice})
 						"""
 					).on(
-						'customerOrderId -> orderId,
+						'customerOrderId -> orderId.get,
 						'itemId -> item.itemId,
 						'quantity -> item.quantity,
 						'unitPrice -> item.unitPrice.toString

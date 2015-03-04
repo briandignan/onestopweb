@@ -33,7 +33,7 @@ object OrdersByVendor {
 						WHERE VendorID={vendorId}
 					"""
 				).on( 
-					'vendorId -> vendorId
+					'vendorId -> vendorId.get
 				).as( scalar[Long] single )
 				
 				val lowQuantity = SQL(
@@ -44,7 +44,7 @@ object OrdersByVendor {
 						AND Inventory.QuantityOnHand < Inventory.QuantityLowPoint
 					"""
 				).on(
-					'vendorId -> vendorId
+					'vendorId -> vendorId.get
 				).as( scalar[Long] single )
 				
 				val ordersReceived = SQL(
@@ -54,7 +54,7 @@ object OrdersByVendor {
 						AND DateDelivered IS NOT null
 					"""
 				).on( 
-					'vendorId -> vendorId
+					'vendorId -> vendorId.get
 				).as( scalar[Long] single )
 				
 				val ordersProcessing = SQL(
@@ -64,7 +64,7 @@ object OrdersByVendor {
 						AND DateDelivered IS null
 					"""
 				).on(
-					'vendorId -> vendorId
+					'vendorId -> vendorId.get
 				).as( scalar[Long] single )
 				
 				

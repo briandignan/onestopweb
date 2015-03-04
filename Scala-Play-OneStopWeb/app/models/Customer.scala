@@ -222,7 +222,7 @@ object Customer {
 						({customerid}, {producttypeid})
 					"""
 				).on(
-					'customerid -> customerId,
+					'customerid -> customerId.get,
 					'producttypeid -> productType
 				).executeInsert()
 			)
