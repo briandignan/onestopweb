@@ -2,6 +2,8 @@ name := "onestopweb"
 
 scalaVersion := "2.11.5"
 
+lazy val root = (project in file(".")).enablePlugins(PlayScala)
+
 version := "1.0-SNAPSHOT"
 
 libraryDependencies ++= Seq(
