@@ -6,6 +6,8 @@ import anorm._
 import anorm.SqlParser._
 import java.util.Date
 
+import scala.language.postfixOps
+
 case class VendorOrderItem( sku: String, description: String, quantity: Long, unitCost: BigDecimal ) { 
 	val totalCost = quantity * unitCost
 }

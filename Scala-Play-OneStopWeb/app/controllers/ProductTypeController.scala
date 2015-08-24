@@ -28,7 +28,7 @@ object ProductTypeController extends Controller with Secured {
 	 */
 	val productTypeForm = Form(
 		mapping(
-			"id" -> ignored( NotAssigned: Pk[Long] ),
+			"id" -> optional(longNumber),
 			"name" -> nonEmptyText.verifying( uniqueNameConstraint )
 			)( ProductType.apply )( ProductType.unapply ) )
 

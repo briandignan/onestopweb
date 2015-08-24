@@ -6,13 +6,15 @@ import play.api.Play.current
 import anorm._
 import anorm.SqlParser._
 
-case class OrdersByVendor( vendorId: Pk[Long], vendorName: String, itemsOffered: Long, lowQuantity: Long, ordersReceived: Long, ordersProcessing: Long )
+import scala.language.postfixOps
+
+case class OrdersByVendor( vendorId: Option[Long], vendorName: String, itemsOffered: Long, lowQuantity: Long, ordersReceived: Long, ordersProcessing: Long )
 
 
 object OrdersByVendor {
 
 	val vendorIdNameParser = {
-		get[Pk[Long]]( "Vendors.VendorID" ) ~
+		get[Option[Long]]( "Vendors.VendorID" ) ~
 		get[String]( "Vendors.Name" ) map {
 			case id~name => ( ( id, name ) )
 		}

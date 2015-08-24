@@ -8,8 +8,12 @@ import play.api.Play.current
 import anorm._
 import anorm.SqlParser._
 
+import scala.language.postfixOps
+
+import scala.language.postfixOps
+
 case class Vendor( 
-		id: Pk[Long], 
+		id: Option[Long], 
 		name: String, 
 		city: Option[String], 
 		state: Option[String], 
@@ -24,7 +28,7 @@ object Vendor {
 
 	
 	val vendorWithoutItems = {
-		get[Pk[Long]]( "Vendors.VendorID" ) ~
+		get[Option[Long]]( "Vendors.VendorID" ) ~
 		get[String]( "Vendors.Name" ) ~
 		get[Option[String]]( "Vendors.City" ) ~
 		get[Option[String]]( "Vendors.State" ) ~
@@ -39,7 +43,7 @@ object Vendor {
 	
 	
 	val vendorJoinVendorItems = {
-		get[Pk[Long]]( "Vendors.VendorID" ) ~
+		get[Option[Long]]( "Vendors.VendorID" ) ~
 		get[String]( "Vendors.Name" ) ~
 		get[Option[String]]( "Vendors.City" ) ~
 		get[Option[String]]( "Vendors.State" ) ~

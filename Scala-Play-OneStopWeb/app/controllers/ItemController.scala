@@ -22,7 +22,7 @@ object ItemController extends Controller with Secured {
 	
 	val itemEditForm = Form(
 		mapping(
-			"id" -> ignored(NotAssigned:Pk[Long]),
+			"id" -> optional(longNumber),
 			"productType" -> longNumber,
 			"sku" -> nonEmptyText,
 			"description" -> nonEmptyText,
@@ -35,7 +35,7 @@ object ItemController extends Controller with Secured {
 	
 	val itemCreateForm = Form(
 		mapping(
-			"id" -> ignored(NotAssigned:Pk[Long]),
+			"id" -> optional(longNumber),
 			"productType" -> longNumber,
 			"sku" -> nonEmptyText.verifying( uniqueSkuConstraint ),
 			"description" -> nonEmptyText,

@@ -8,7 +8,9 @@ import play.api.Play.current
 import anorm._
 import anorm.SqlParser._
 
-case class CustomerOrder( id: Pk[Long], customerId: Option[Long], dateTime: Date, items: Seq[CustomerOrderItem] )
+import scala.language.postfixOps
+
+case class CustomerOrder( id: Option[Long], customerId: Option[Long], dateTime: Date, items: Seq[CustomerOrderItem] )
 
 object CustomerOrder {
 
@@ -25,7 +27,7 @@ object CustomerOrder {
 			).on(
 				'customerId -> order.customerId,
 				'dateTime -> order.dateTime
-			).executeInsert( scalar[Pk[Long]].single )
+			).executeInsert( scalar[Option[Long]].single )
 			
 			println( "Inserted order. CustomerOrderID: " + orderId )
 			println( "Number of items: " + order.items.size )
@@ -51,7 +53,7 @@ object CustomerOrder {
 	}
 	
 	val joinMapper = {
-		get[Pk[Long]]( "CustomerOrders.CustomerOrderID" ) ~
+		get[Option[Long]]( "CustomerOrders.CustomerOrderID" ) ~
 		get[Option[Long]]( "CustomerOrders.CustomerID" ) ~
 		get[Date]( "CustomerOrders.DateTime" ) ~
 		get[Long]( "CustomerOrderItems.ItemID" ) ~

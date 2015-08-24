@@ -6,7 +6,9 @@ import play.api.Play.current
 import anorm._
 import anorm.SqlParser._
 
-case class Customer( id: Pk[Long], firstName: String, lastName: String, email: Option[String], phoneNumber: Option[String], promotionDeviceId: Long, favorites: Seq[Long] )
+import scala.language.postfixOps
+
+case class Customer( id: Option[Long], firstName: String, lastName: String, email: Option[String], phoneNumber: Option[String], promotionDeviceId: Long, favorites: Seq[Long] )
 
 object Customer {
 	
@@ -84,7 +86,7 @@ object Customer {
 	
 	
 	val customerJoinFavorites = {
-		get[Pk[Long]]( "Customers.CustomerID" ) ~
+		get[Option[Long]]( "Customers.CustomerID" ) ~
 		get[String]( "Customers.FirstName" ) ~
 		get[String]( "Customers.LastName" ) ~
 		get[Option[String]]( "Customers.EmailAddress" ) ~
@@ -209,7 +211,7 @@ object Customer {
 				'phone -> customer.phoneNumber,
 				'email -> customer.email,
 				'promotiondeviceid -> customer.promotionDeviceId
-			).executeInsert( scalar[Pk[Long]] single )
+			).executeInsert( scalar[Option[Long]] single )
 			
 			val favorites = customer.favorites.toSet
 			
@@ -244,7 +246,7 @@ object Customer {
 	}
 	
 	val nameMapper = {
-		get[Pk[Long]]("Customers.CustomerID") ~
+		get[Option[Long]]("Customers.CustomerID") ~
 		get[String]("Customers.FirstName") ~
 		get[String]("Customers.LastName") map {
 			case id~firstname~lastname => ( id.toString(), firstname + " " + lastname )

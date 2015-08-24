@@ -11,7 +11,9 @@ import anorm.SqlParser._
 
 import org.mindrot.jbcrypt.BCrypt
 
-case class User( id: Pk[Long] = NotAssigned, email: String, firstName: String, lastName: String, password: String )
+import scala.language.postfixOps
+
+case class User( id: Option[Long] = None, email: String, firstName: String, lastName: String, password: String )
 
 object User {
 
@@ -21,7 +23,7 @@ object User {
 	 * Parse a User from a ResultSet
 	 */
 	val simple = {
-		get[Pk[Long]]( "AdminUsers.UserID" ) ~
+		get[Option[Long]]( "AdminUsers.UserID" ) ~
 			get[String]( "AdminUsers.EmailAddress" ) ~
 			get[String]( "AdminUsers.FirstName" ) ~
 			get[String]( "AdminUsers.LastName" ) ~
@@ -34,7 +36,7 @@ object User {
 	 * Parse a User from a ResultSet that doesn't contain a password
 	 */
 	val withoutPassword = {
-		get[Pk[Long]]( "AdminUsers.UserID" ) ~
+		get[Option[Long]]( "AdminUsers.UserID" ) ~
 			get[String]( "AdminUsers.EmailAddress" ) ~
 			get[String]( "AdminUsers.FirstName" ) ~
 			get[String]( "AdminUsers.LastName" ) map {

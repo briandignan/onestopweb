@@ -3,7 +3,7 @@ package models
 import java.util.Date
 import anorm._
 
-case class CustomerOrderSummary( customerOrderId: Pk[Long], customer: Option[Customer], dateTime: Date, quantityItems: Long, totalSalesPrice: BigDecimal )
+case class CustomerOrderSummary( customerOrderId: Option[Long], customer: Option[Customer], dateTime: Date, quantityItems: Long, totalSalesPrice: BigDecimal )
 
 object CustomerOrderSummary {
 

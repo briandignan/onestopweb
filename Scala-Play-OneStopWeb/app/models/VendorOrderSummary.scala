@@ -7,14 +7,16 @@ import anorm.SqlParser._
 import java.util.Date
 import java.text.SimpleDateFormat
 
-case class VendorOrderSummary( orderId: Pk[Long], vendorId: Long, vendorName: String, dateOrdered: String, dateReceived: Option[String], itemsOrdered: String, totalCost: String)
+import scala.language.postfixOps
+
+case class VendorOrderSummary( orderId: Option[Long], vendorId: Long, vendorName: String, dateOrdered: String, dateReceived: Option[String], itemsOrdered: String, totalCost: String)
 
 object VendorOrderSummary { 
 	
 	val dateFormat = new SimpleDateFormat("MM/dd/yyyy")
 	
 	def simpleParser = {
-		get[Pk[Long]]( "VendorOrders.VendorOrderID" ) ~
+		get[Option[Long]]( "VendorOrders.VendorOrderID" ) ~
 		get[Long]( "VendorOrders.VendorID" ) ~
 		get[String]( "Vendors.Name" ) ~
 		get[Date]( "VendorOrders.DateOrdered" ) ~

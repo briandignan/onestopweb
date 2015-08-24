@@ -23,12 +23,12 @@ object CustomerSalesController extends Controller with Secured {
 	
 	val createCustomer = Form(
 		mapping(
-			"customerOrderId" -> ignored(NotAssigned:Pk[Long]),
+			"customerOrderId" -> optional(longNumber),
 			"customerId" -> optional(longNumber),
 			"dateTime" -> date("yyyy-MM-dd HH:mm:ss"),
 			"items" -> seq(
 				mapping(
-					"customerOrderId" -> ignored(NotAssigned:Pk[Long]),
+					"customerOrderId" -> optional(longNumber),
 					"itemId" -> longNumber,
 					"quantity" -> longNumber,
 					"unitPrice" -> bigDecimal

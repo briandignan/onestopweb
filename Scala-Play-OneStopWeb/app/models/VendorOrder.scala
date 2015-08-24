@@ -6,6 +6,8 @@ import play.api.Play.current
 import anorm._
 import anorm.SqlParser._
 
+import scala.language.postfixOps
+
 case class VendorOrder(dateOrdered: Date, dateReceived: Option[Date], emailInfo: Option[EmailInfo], items: Seq[VendorPurchaseItem])
 
 object VendorOrder {

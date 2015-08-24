@@ -22,7 +22,7 @@ object VendorManagementController extends Controller with Secured {
 	
 	val vendorForm: Form[Vendor] = Form(
 		mapping( 
-			"id" -> ignored(NotAssigned:Pk[Long]),
+			"id" -> optional(longNumber),
 			"name" -> nonEmptyText,
 			"city" -> optional(text),
 			"state" -> optional(text),

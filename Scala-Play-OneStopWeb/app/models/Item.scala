@@ -4,9 +4,10 @@ import anorm._
 import anorm.SqlParser._
 import play.api.db.DB
 import play.api.Play.current
+import scala.language.postfixOps
 
 case class Item( 
-		id: Pk[Long] = NotAssigned, 
+		id: Option[Long] = None, 
 		productTypeId: Long, 
 		sku: String, 
 		description: String, 
@@ -20,7 +21,7 @@ object Item {
 	
 	
 	val simpleParser = 
-		get[Pk[Long]]( "Inventory.ItemID" ) ~
+		get[Option[Long]]( "Inventory.ItemID" ) ~
 		get[Long]( "Inventory.ProductTypeID" ) ~
 		get[String]( "Inventory.SKU" ) ~
 		get[String]( "Inventory.Description" ) ~
@@ -179,7 +180,7 @@ object Item {
 	}
 	
 	val nameMapper = {
-		get[Pk[Long]]( "Inventory.ItemID" ) ~
+		get[Option[Long]]( "Inventory.ItemID" ) ~
 		get[String]( "Inventory.SKU" ) ~
 		get[String]( "Inventory.Description" ) map {
 			case id~sku~description => ( id.toString, sku + " " + description )
@@ -197,7 +198,7 @@ object Item {
 	}
 	
 	val priceMapper = {
-		get[Pk[Long]]( "Inventory.ItemID" ) ~
+		get[Option[Long]]( "Inventory.ItemID" ) ~
 		get[java.math.BigDecimal]( "Inventory.UnitPrice" ) map {
 			case id~unitPrice => ( id.toString, unitPrice.toString )
 		}

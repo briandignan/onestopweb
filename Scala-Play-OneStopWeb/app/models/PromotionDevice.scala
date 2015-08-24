@@ -6,12 +6,14 @@ import play.api.Play.current
 import anorm._
 import anorm.SqlParser._
 
-case class PromotionDevice( id: Pk[Long], name: String )
+import scala.language.postfixOps
+
+case class PromotionDevice( id: Option[Long], name: String )
 
 object PromotionDevice {
 
 	val simpleParser = 
-		get[Pk[Long]]( "PromotionDevices.PromotionDeviceID" ) ~
+		get[Option[Long]]( "PromotionDevices.PromotionDeviceID" ) ~
 		get[String]( "PromotionDevices.Name" ) map {
 			case id ~ name => PromotionDevice( id, name )
 		}

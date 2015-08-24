@@ -16,6 +16,10 @@ import anorm._
 import models._
 import views._
 
+import scala.language.postfixOps
+
+import scala.language.postfixOps
+
 object AdminUsers extends Controller with Secured {
 
 	/**
@@ -28,7 +32,7 @@ object AdminUsers extends Controller with Secured {
 	 */
 	val userEditForm = Form(
 		mapping(
-			"id" -> ignored( NotAssigned: Pk[Long] ),
+			"id" -> optional(longNumber),
 			//"id" -> of[Long],
 			"email" -> email,
 			"firstName" -> nonEmptyText,
@@ -61,7 +65,7 @@ object AdminUsers extends Controller with Secured {
 	 */
 	val userCreateForm = Form(
 		mapping(
-			"id" -> ignored( NotAssigned: Pk[Long] ),
+			"id" -> optional(longNumber),
 			"email" -> email.verifying( uniqueEmailConstraint ),
 			"firstName" -> nonEmptyText,
 			"lastName" -> nonEmptyText,

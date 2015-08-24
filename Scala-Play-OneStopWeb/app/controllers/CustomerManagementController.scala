@@ -29,6 +29,7 @@ import models._
 import anorm.Pk
 import anorm.NotAssigned
 
+import scala.language.postfixOps
 
 object CustomerManagementController extends Controller with Secured {
 
@@ -36,7 +37,7 @@ object CustomerManagementController extends Controller with Secured {
 	
 	val editCustomerForm: Form[Customer] = Form(
 		mapping(
-			"id" -> ignored(NotAssigned:Pk[Long]),
+			"id" -> optional(longNumber),
 			"firstName" -> nonEmptyText,
 			"lastName" -> nonEmptyText,
 			"email" -> optional(text),
